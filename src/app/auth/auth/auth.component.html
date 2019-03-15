@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      <ng-content select=".heading"></ng-content>
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <h1>
+    Form
+  </h1>
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit();">
+      <ion-input formControlName="email"></ion-input>
+      <ion-input formControlName="password"></ion-input>
+  </form>
+
+  <div>
+      <ng-content select="ion-button"></ng-content>
+  </div>
+</ion-content>
