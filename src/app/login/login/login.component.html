@@ -1,3 +1,11 @@
-<p>
-  login works!
-</p>
+<app-auth class="ion-page" (submitted)="onSubmit($event)" (formValid)="isFormValid($event)">
+    <div class="heading">Login</div>
+    <ion-button 
+    expand="block" 
+    type="submit"
+    shape="round"
+    class="btn"
+    [disabled]="!formValid">
+      Sign in
+    </ion-button>
+  </app-auth>

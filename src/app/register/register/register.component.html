@@ -1,9 +1,6 @@
-<app-auth>
+<app-auth class="ion-page" (submitted)="onSubmit($event)" (formValid)="isFormValid($event)">
   <div class="heading">Register</div>
-  <ion-button 
-  expand="block" 
-  type="submit"
-  shape="round">
+  <ion-button expand="block" type="submit" class="btn" shape="round" [disabled]="!formValid">
     Create account
   </ion-button>
 </app-auth>

@@ -7,6 +7,8 @@ import { AuthModule } from '../auth/auth.module';
 
 // components imports
 import { RegisterComponent } from '../register/register/register.component';
+import { AppFirebaseModule } from '../firebase/firebase.module';
+import { CoreModule } from '../core/core.module';
 
 
 
@@ -25,7 +27,9 @@ const RegisterRoute: Routes = [
     CommonModule,
     RouterModule.forChild(RegisterRoute),
     IonicModule,
-    AuthModule
+    AuthModule,
+    AppFirebaseModule,
+    CoreModule
   ]
 })
 export class RegisterModule { }

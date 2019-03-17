@@ -9,15 +9,47 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <h1>
-    Form
-  </h1>
-  <form [formGroup]="authForm" (ngSubmit)="onSubmit();">
-      <ion-input formControlName="email"></ion-input>
-      <ion-input formControlName="password"></ion-input>
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <ion-item>
+      <ion-label>
+        <ion-icon name="person"></ion-icon>
+      </ion-label>
+      <ion-input type="text" formControlName="email" placeholder="Email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>
+        <ion-icon name="key"></ion-icon>
+      </ion-label>
+      <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+    </ion-item>
+    <ng-content select=".btn"></ng-content>
   </form>
 
-  <div>
-      <ng-content select="ion-button"></ng-content>
-  </div>
+  <ion-item *ngIf="email.errors?.required && email.touched">
+    <ion-label>
+      Email is required.
+    </ion-label>
+    <ion-icon name="information-circle" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="email.errors?.email && email.touched">
+    <ion-label>
+      Invalid email
+    </ion-label>
+    <ion-icon name="information-circle" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="password.errors?.required && password.touched">
+    <ion-label>
+      Password required.
+    </ion-label>
+    <ion-icon name="information-circle" slot="end"></ion-icon>
+  </ion-item>
+  <ion-item *ngIf="password.errors?.minlength && password.touched">
+    <ion-label>
+      Password should be min(6) characters.
+    </ion-label>
+    <ion-badge color="light">
+      {{password.value.length}}
+    </ion-badge>
+    <ion-icon name="information-circle" slot="end"></ion-icon>
+  </ion-item>
 </ion-content>

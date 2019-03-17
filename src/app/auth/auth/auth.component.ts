@@ -1,25 +1,59 @@
-import { Component, OnInit, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Form, Validator, Validators } from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output, ChangeDetectionStrategy, ViewEncapsulation, OnDestroy } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
+import { distinctUntilChanged } from 'rxjs/operators';
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.ShadowDom
 })
-export class AuthComponent implements OnInit {
+export class AuthComponent implements OnInit, OnDestroy {
 
   authForm: FormGroup;
+  @Output()
   submitted: EventEmitter<FormGroup> = new EventEmitter();
-  constructor(private fb: FormBuilder) { }
+
+  @Output()
+  formValid: EventEmitter<boolean> = new EventEmitter(false);
+
+  formValidSubs: Subscription;
+
+  constructor(private fb: FormBuilder) {
+  }
 
   ngOnInit() {
+
     this.authForm = this.fb.group({
-      email: ['', Validators.email],
-      password: ['', Validators.minLength(6)]
+      email: ['', [Validators.email, Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    this.authForm.get('email').patchValue('1@2.com');
+    this.authForm.get('password').patchValue('123456');
+
+    this.formValidSubs = this.authForm.statusChanges.pipe(
+      distinctUntilChanged()
+    ).subscribe(() => {
+      this.formValid.emit(
+        this.authForm.valid
+      );
     });
   }
 
+  get email() { return this.authForm.get('email'); }
+
+  get password() { return this.authForm.get('password'); }
+
   onSubmit() {
-    this.submitted.emit(this.authForm);
+    if (this.authForm.valid) {
+      this.submitted.emit(this.authForm);
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.formValidSubs.unsubscribe();
   }
 
 }
