@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { AngularFireAuth } from '@angular/fire/auth';
-import { auth } from 'firebase/app';
 import { Observable } from 'rxjs';
 import { Todo } from '../models/todo.model';
 import { AppFirebaseService } from './firebase.service';
@@ -10,10 +8,10 @@ import { Store } from 'store';
 @Injectable()
 export class AppFirebaseCRUDService {
 
-    tableName = 'todo-list';
-    uid = this.fireService.user.uid;
+    tableName = 'todos';
+    user = this.fireService.user;
 
-    todoList$: Observable<any[]> = this.fireDB.list(`${this.tableName}/${this.uid}`)
+    todoList$: Observable<any[]> = this.fireDB.list(`${this.tableName}/${this.user['uid']}`)
         .snapshotChanges()
         .pipe(
             map(changes => changes.map(c => ({ key: c.payload.key, ...c.payload.val() })
@@ -22,19 +20,23 @@ export class AppFirebaseCRUDService {
             ));
 
     constructor(private fireDB: AngularFireDatabase,
-        private fireService: AppFirebaseService, private store: Store) { }
+        private fireService: AppFirebaseService, private store: Store) {
+
+    }
 
 
 
     addTodo(item: Todo) {
-        return this.fireDB.list(`${this.tableName}/${this.uid}`).push(item);
+        const todo = {...item};
+        todo.timestamp = new Date().getTime();
+        return this.fireDB.list(`${this.tableName}/${this.user['uid']}`).push(todo);
     }
 
     updateTodo(item: Todo, key: string) {
-        return this.fireDB.object(`${this.tableName}/${this.uid}/${key}`).update(item);
+        return this.fireDB.object(`${this.tableName}/${this.user['uid']}/${key}`).update(item);
     }
 
     deleteTodo(key: string) {
-        return this.fireDB.list(`${this.tableName}/${this.uid}`).remove(key);
+        return this.fireDB.list(`${this.tableName}/${this.user['uid']}`).remove(key);
     }
 }

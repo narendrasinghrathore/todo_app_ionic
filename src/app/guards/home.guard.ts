@@ -12,14 +12,17 @@ import { CoreService } from '../core/core.service';
 export class HomeGuard implements CanActivate {
   constructor(private fireAuthService: AppFirebaseService, private router: Router, private coreService: CoreService) { }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree
+  canActivate(): boolean | UrlTree
     | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
-    if (this.fireAuthService.user) {
-      return true;
-    } else {
-      this.coreService.displayToast(`You need to login first.`);
-      this.router.navigate(['/login']);
-      return false;
-    }
+
+    return this.fireAuthService.authState.pipe(
+      map((user) => {
+        if (!user) {
+          this.coreService.displayToast(`You need to login first.`);
+          this.router.navigate(['/login']);
+        }
+        return !!user;
+      })
+    );
   }
 }

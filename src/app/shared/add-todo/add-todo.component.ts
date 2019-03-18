@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Todo } from 'src/app/models/todo.model';
+import { ModalController } from '@ionic/angular';
 
 @Component({
   selector: 'app-add-todo',
@@ -16,10 +17,7 @@ export class AddTodoComponent implements OnInit {
   @Input()
   todoItem: Todo;
 
-  @Output()
-  onsubmit: EventEmitter<FormGroup> = new EventEmitter(null);
-
-  constructor(private fb: FormBuilder) { }
+  constructor(private fb: FormBuilder, private modal: ModalController) { }
 
   ngOnInit() {
     this.todoForm = this.fb.group({
@@ -33,9 +31,11 @@ export class AddTodoComponent implements OnInit {
   }
 
   OnSubmit() {
-    if (this.todoForm.valid) {
-      this.onsubmit.emit(this.todoForm);
-    }
+    this.onClose();
+  }
+
+  onClose() {
+    this.modal.dismiss(this.todoForm.valid ? this.todoForm.value : null);
   }
 
 }

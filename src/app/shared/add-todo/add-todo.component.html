@@ -1,12 +1,38 @@
-<form [formGroup]="todoForm" (ngSubmit)="OnSubmit();">
-  <ion-item>
-    <ion-label position="stacked">Todo title</ion-label>
-    <ion-input formControlName="title"></ion-input>
-  </ion-item>
-  <ion-item>
-    <ion-label position="stacked">Description</ion-label>
-    <ion-textarea formControlName="desc" placeholder="Add some description to your todo.">
-    </ion-textarea>
-  </ion-item>
-  <ion-button expand="block" [disabled]="todoForm?.invalid">Add</ion-button>
-</form>
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button (click)="onClose()">
+      <ion-icon slot="icon-only" name="arrow-dropleft-circle"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content>
+    <ion-card class="welcome-card">
+        <ion-img src="/assets/shapes.svg"></ion-img>
+        <form [formGroup]="todoForm" (ngSubmit)="OnSubmit();">
+          <ion-card-header>
+            <ion-card-subtitle>Todo Title</ion-card-subtitle>
+            <ion-item>
+              <ion-input clearInput formControlName="title" color="primary"></ion-input>
+            </ion-item>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-item>
+              <ion-label position="stacked">Description</ion-label>
+              <ion-textarea cols="4" clearInput formControlName="desc" placeholder="Add some description to your todo.">
+              </ion-textarea>
+            </ion-item>
+          </ion-card-content>
+      
+          <ion-button expand="block" type="submit" [disabled]="todoForm?.invalid">
+              <div *ngIf="todoItem else createNew">
+                  <ion-icon name="save"></ion-icon> Update todo
+              </div>
+              <ng-template #createNew>
+                  <ion-icon name="create"></ion-icon> Create todo
+              </ng-template>
+          </ion-button>
+        </form>
+      
+      </ion-card>
+      
+</ion-content>

@@ -1,6 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AppFirebaseService } from '../firebase/firebase.service';
 import { Subscription, Observable } from 'rxjs';
+import { SharedService } from '../shared/services/shared.service';
+import { AppFirebaseCRUDService } from '../firebase/crud.service';
+import { Store } from 'store';
+import { Todo } from '../models/todo.model';
 
 @Component({
   selector: 'app-home',
@@ -11,21 +15,47 @@ export class HomePage implements OnInit, OnDestroy {
 
   googleSignInSubs: Subscription;
 
-  constructor(private auth: AppFirebaseService) { }
+  todoList$: Observable<Todo[]>;
+
+  todoListSusb: Subscription;
+
+  constructor(private auth: AppFirebaseService,
+    private shared: SharedService, private fire: AppFirebaseCRUDService,
+    private store: Store) { }
 
   ngOnInit() {
+
+    this.todoList$ = this.store.select<Todo[]>('todos');
+
+    this.todoListSusb = this.fire.todoList$.subscribe();
+
   }
 
   login(): void {
     this.googleSignInSubs = this.auth.signInGoogle().subscribe(data => console.log(data));
+    this.todoListSusb.add(this.googleSignInSubs);
+  }
+
+
+  async addTodo() {
+    const modal = await this.shared.addTodoDialog();
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      this.fire.addTodo(data);
+    }
+  }
+
+  async openTodo(item: Todo) {
+    const modal = await this.shared.addTodoDialog(item);
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      this.fire.updateTodo(data, item.key);
+    }
   }
 
 
   ngOnDestroy() {
-    if (this.googleSignInSubs) {
-      this.googleSignInSubs.unsubscribe();
-    }
-
+    this.todoListSusb.unsubscribe();
   }
 
 }

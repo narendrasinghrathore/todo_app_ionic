@@ -4,15 +4,19 @@ import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { pluck } from 'rxjs/operators';
 import { Todo } from './models/todo.model';
+import { AppUser } from './models/User';
+
 
 
 
 export interface State {
+    user: AppUser;
     todos: Todo[];
     [key: string]: any;
 }
 
 const state: State = {
+    user: undefined,
     todos: undefined
 };
 

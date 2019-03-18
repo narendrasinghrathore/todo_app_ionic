@@ -7,6 +7,7 @@ import { RouterModule } from '@angular/router';
 import { HomePage } from './home.page';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
+import { AppFirebaseModule } from '../firebase/firebase.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { SharedModule } from '../shared/shared.module';
     FormsModule,
     IonicModule,
     CoreModule,
+    AppFirebaseModule,
     SharedModule,
     RouterModule.forChild([
       {
