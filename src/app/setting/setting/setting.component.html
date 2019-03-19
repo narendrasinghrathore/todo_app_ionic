@@ -1,0 +1,35 @@
+<ion-header color="dark">
+  <ion-toolbar color="dark">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="primary">
+      {{pageTitle | uppercase}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon name="funnel"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+
+<ion-tabs (ionTabsDidChange)="tabChanged($event)">
+
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button tab="profile">
+      <ion-label>Profile</ion-label>
+      <ion-icon [name]="profileIcon"></ion-icon>
+      <ion-badge>6</ion-badge>
+    </ion-tab-button>
+
+    <ion-tab-button tab="about">
+      <ion-label>About</ion-label>
+      <ion-icon name="information"></ion-icon>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+</ion-tabs>
+<!-- <ion-router-outlet></ion-router-outlet> -->

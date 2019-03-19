@@ -7,6 +7,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from 'src/environments/environment.prod';
 import { AppFirebaseService } from './firebase.service';
 import { AppFirebaseCRUDService } from './crud.service';
+import { FirebaseUserService } from './user.service';
 @NgModule({
   imports: [
     CommonModule,
@@ -21,7 +22,8 @@ export class AppFirebaseModule {
       ngModule: AppFirebaseModule,
       providers: [
         AppFirebaseService,
-        AppFirebaseCRUDService
+        AppFirebaseCRUDService,
+        FirebaseUserService
       ]
     };
   }

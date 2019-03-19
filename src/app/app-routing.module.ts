@@ -14,6 +14,11 @@ const routes: Routes = [
     canActivate: [HomeGuard]
   },
   {
+    path: 'setting',
+    loadChildren: './setting/setting.module#SettingModule',
+    canActivate: [HomeGuard]
+  },
+  {
     path: 'list',
     loadChildren: './list/list.module#ListPageModule'
   },

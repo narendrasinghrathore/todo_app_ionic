@@ -26,7 +26,7 @@ export class AppFirebaseService {
       }
     ));
 
-  get user() {
+  get user(): firebase.User {
     return this.fireAUTH.auth.currentUser;
   }
 
