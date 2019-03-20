@@ -5,57 +5,58 @@ import { SharedService } from '../shared/services/shared.service';
 import { AppFirebaseCRUDService } from '../firebase/crud.service';
 import { Store } from 'store';
 import { Todo } from '../models/todo.model';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-home',
-  templateUrl: 'home.page.html',
-  styleUrls: ['home.page.scss'],
+    selector: 'app-home',
+    templateUrl: 'home.page.html',
+    styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  googleSignInSubs: Subscription;
+    googleSignInSubs: Subscription;
 
-  todoList$: Observable<Todo[]>;
+    todoList$: Observable<Todo[]>;
 
-  todoListSusb: Subscription;
+    todoListSusb: Subscription;
 
-  constructor(private auth: AppFirebaseService,
-    private shared: SharedService, private fire: AppFirebaseCRUDService,
-    private store: Store) { }
+    constructor(private auth: AppFirebaseService,
+        private shared: SharedService, private fire: AppFirebaseCRUDService,
+        private store: Store) { }
 
-  ngOnInit() {
+    ngOnInit() {
 
-    this.todoList$ = this.store.select<Todo[]>('todos');
+        this.todoList$ = this.store.select<Todo[]>('todos');
 
-    this.todoListSusb = this.fire.todoList$.subscribe();
+        this.todoListSusb = this.fire.todoList$(this.fire.url).subscribe();
 
-  }
-
-  login(): void {
-    this.googleSignInSubs = this.auth.signInGoogle().subscribe(data => console.log(data));
-    this.todoListSusb.add(this.googleSignInSubs);
-  }
-
-
-  async addTodo() {
-    const modal = await this.shared.addTodoDialog();
-    const { data } = await modal.onDidDismiss();
-    if (data) {
-      this.fire.addTodo(data);
     }
-  }
 
-  async openTodo(item: Todo) {
-    const modal = await this.shared.addTodoDialog(item);
-    const { data } = await modal.onDidDismiss();
-    if (data) {
-      this.fire.updateTodo(data, item.key);
+    login(): void {
+        this.googleSignInSubs = this.auth.signInGoogle().subscribe(data => console.log(data));
+        // this.todoListSusb.add(this.googleSignInSubs);
     }
-  }
 
 
-  ngOnDestroy() {
-    this.todoListSusb.unsubscribe();
-  }
+    async addTodo() {
+        const modal = await this.shared.addTodoDialog();
+        const { data } = await modal.onDidDismiss();
+        if (data) {
+            this.fire.addTodo(data);
+        }
+    }
+
+    async openTodo(item: Todo) {
+        const modal = await this.shared.addTodoDialog(item);
+        const { data } = await modal.onDidDismiss();
+        if (data) {
+            this.fire.updateTodo(data, item.key);
+        }
+    }
+
+
+    ngOnDestroy() {
+        this.todoListSusb.unsubscribe();
+    }
 
 }

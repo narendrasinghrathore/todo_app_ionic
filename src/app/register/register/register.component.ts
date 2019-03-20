@@ -19,16 +19,14 @@ export class RegisterComponent implements OnInit {
     private route: Router, private coreService: CoreService) { }
 
   ngOnInit() {
+    this.fireAuth.logout();
 
   }
 
   onSubmit(event: FormGroup) {
     this.fireAuth.registerWithEmail(event.value)
-      .pipe(
-        tap(val => this.coreService.displayToast(`Great let's start to explore the app.`))
-      )
       .subscribe(val => {
-        this.route.navigate(['/']);
+        this.onSuccessLogin();
       }, (err: FireBaseHttpErrorResponse) => {
         this.coreService.displayToast(`${err.message}`);
       });
@@ -36,6 +34,17 @@ export class RegisterComponent implements OnInit {
 
   isFormValid(event: boolean) {
     this.formValid = event;
+  }
+
+  signInGoogle() {
+    this.fireAuth.signInGoogle().subscribe(
+      () => this.onSuccessLogin()
+    );
+  }
+
+  onSuccessLogin() {
+    this.coreService.displayToast(`Great let's start to explore the app.`);
+    this.route.navigate(['/']);
   }
 
 }

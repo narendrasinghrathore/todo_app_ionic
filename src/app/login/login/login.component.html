@@ -1,4 +1,6 @@
-<app-auth class="ion-page" (submitted)="onSubmit($event)" (formValid)="isFormValid($event)">
+<app-auth class="ion-page" (submitted)="onSubmit($event)" 
+(formValid)="isFormValid($event)"
+(onGoogleLogin)="signInGoogle();">
     <div class="heading">Login</div>
     <ion-button 
     expand="block" 
@@ -7,5 +9,8 @@
     class="btn"
     [disabled]="!formValid">
       Sign in
+    </ion-button>
+    <ion-button class="action" href="/register" fill="clear">
+      Not registered, Create a free account here.
     </ion-button>
   </app-auth>

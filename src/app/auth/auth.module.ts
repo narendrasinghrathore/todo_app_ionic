@@ -4,14 +4,15 @@ import { NgModule } from '@angular/core';
 import { AuthComponent } from './auth/auth.component';
 import { IonicModule } from '@ionic/angular';
 
-import {ReactiveFormsModule} from '@angular/forms';
+import {ReactiveFormsModule, FormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [AuthComponent],
   imports: [
     CommonModule,
     IonicModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [AuthComponent]
 })

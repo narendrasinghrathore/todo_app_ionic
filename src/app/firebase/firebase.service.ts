@@ -9,6 +9,8 @@ import { tap } from 'rxjs/operators';
 @Injectable()
 export class AppFirebaseService {
 
+  uid$: BehaviorSubject<string> = new BehaviorSubject(null);
+
   auth$ = this.fireAUTH.authState.pipe(
     tap(
       next => {
@@ -21,6 +23,8 @@ export class AppFirebaseService {
           uid: next.uid,
           authenticated: true
         };
+
+        this.uid$.next(user.uid);
 
         this.store.set('user', user);
       }
@@ -73,7 +77,9 @@ export class AppFirebaseService {
     return Observable.create((obs) => {
       try {
         this.fireAUTH.auth.createUserWithEmailAndPassword(user.email, user.password)
-          .then(val => obs.next(val))
+          .then(val => {
+            obs.next(val);
+          })
           .catch(err => obs.error(err));
       } catch (e) {
         obs.error(e);
@@ -83,6 +89,7 @@ export class AppFirebaseService {
   }
 
   logout() {
+    this.uid$.next(null);
     this.fireAUTH.auth.signOut();
   }
 }

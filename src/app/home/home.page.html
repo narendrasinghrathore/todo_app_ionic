@@ -1,9 +1,9 @@
-<ion-header color="dark">
-  <ion-toolbar color="dark">
+<ion-header color="primary">
+  <ion-toolbar color="primary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title color="primary">
+    <ion-title color="light">
       Home
     </ion-title>
     <ion-buttons slot="end">
@@ -15,16 +15,16 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content color="dark">
+<ion-content >
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button color="medium">
-      <ion-icon color="dark" name="add" (click)="addTodo()"></ion-icon>
+    <ion-fab-button color="secondary">
+      <ion-icon color="light" name="add" (click)="addTodo()"></ion-icon>
     </ion-fab-button>
   </ion-fab>
 
   <ng-container *ngIf="todoList$ | async as list else loading">
 
-    <ion-card class="welcome-card" color="dark" *ngFor="let item of list | todoList : 'asd'" (click)="openTodo(item)">
+    <ion-card class="welcome-card" color="light" *ngFor="let item of list | todoList : 'asd'" (click)="openTodo(item)">
       <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
       <ion-card-header color="light">
         <ion-card-subtitle>

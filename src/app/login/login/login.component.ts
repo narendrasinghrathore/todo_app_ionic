@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { CoreService } from 'src/app/core/core.service';
 import { FireBaseHttpErrorResponse } from 'src/app/models/firebase.model';
 import { FormGroup } from '@angular/forms';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -20,18 +19,13 @@ export class LoginComponent implements OnInit {
     private coreService: CoreService) { }
 
   ngOnInit() {
-
+    this.fireAuth.logout();
   }
 
   onSubmit(event: FormGroup) {
     this.fireAuth.signInEmail(event.value)
-      .pipe(
-        tap(val =>
-          this.coreService.displayToast(`Logged in, let explore the app.`))
-      )
-      .subscribe(val => {
-        console.log(val);
-        this.route.navigate(['/']);
+      .subscribe(() => {
+        this.onSuccessLogin();
       }, (err: FireBaseHttpErrorResponse) => {
         console.log(err);
         this.coreService.displayToast(`${err.message}`);
@@ -40,6 +34,17 @@ export class LoginComponent implements OnInit {
 
   isFormValid(event: boolean) {
     this.formValid = event;
+  }
+
+  signInGoogle() {
+    this.fireAuth.signInGoogle().subscribe(
+      () => this.onSuccessLogin()
+    );
+  }
+
+  onSuccessLogin() {
+    this.coreService.displayToast(`Logged in, let explore the app.`);
+    this.route.navigate(['/home']);
   }
 
 }

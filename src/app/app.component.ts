@@ -4,18 +4,21 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppFirebaseService } from './firebase/firebase.service';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, timer } from 'rxjs';
 import { AppUser } from './models/User';
 import { Store } from 'store';
 
 @Component({
   selector: 'app-root',
-  templateUrl: 'app.component.html'
+  templateUrl: 'app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
 
   user$: Observable<AppUser>;
   subscription: Subscription;
+
+  showSpinner = true;
 
   public appPages = [
     {
@@ -49,6 +52,8 @@ export class AppComponent implements OnInit, OnDestroy {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      timer(800).subscribe(() => this.showSpinner = false);
     });
   }
 

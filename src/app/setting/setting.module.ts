@@ -6,6 +6,8 @@ import { AppFirebaseModule } from '../firebase/firebase.module';
 import { RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 import { AboutComponent } from './container/about/about.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { CoreModule } from '../core/core.module';
 
 @NgModule({
   declarations: [
@@ -16,6 +18,8 @@ import { AboutComponent } from './container/about/about.component';
   imports: [
     CommonModule,
     AppFirebaseModule,
+    ReactiveFormsModule,
+    CoreModule,
     IonicModule,
     RouterModule.forChild([
       {

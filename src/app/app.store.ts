@@ -5,6 +5,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
 import { pluck } from 'rxjs/operators';
 import { Todo } from './models/todo.model';
 import { AppUser } from './models/User';
+import { AppUserData } from './models/firebase.model';
 
 
 
@@ -12,12 +13,14 @@ import { AppUser } from './models/User';
 export interface State {
     user: AppUser;
     todos: Todo[];
+    userProfileData: AppUserData;
     [key: string]: any;
 }
 
 const state: State = {
     user: undefined,
-    todos: undefined
+    todos: undefined,
+    userProfileData: undefined
 };
 
 export class Store {

@@ -1,3 +1,36 @@
-<p>
-  profile works!
-</p>
+<ion-content padding>
+  <form class [formGroup]="profileForm">
+    <ion-item>
+      <ion-label>Profile Name</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="fullname" placeholder="Type here..." type="text"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Age</ion-label>
+    </ion-item>
+    <ion-item>
+      <ion-input formControlName="age" placeholder="Type here..." type="number"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Gender</ion-label>
+      <ion-select placeholder="Select One" formControlName="gender">
+        <ion-select-option value="f">Female</ion-select-option>
+        <ion-select-option value="m">Male</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <!-- <ion-item>
+          <ion-label>Gender</ion-label>
+        </ion-item>
+      <ion-item>
+          <ion-input formControlName="gender" placeholder="Type here..." type="text"></ion-input>
+        </ion-item> -->
+    <ion-button type="submit" [style.visibility]="'hidden'">
+    </ion-button>
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button type="submit" color="secondary" (click)="updateUser();" [disabled]="profileForm.invalid">
+        <ion-icon color="light" name="save"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </form>
+</ion-content>

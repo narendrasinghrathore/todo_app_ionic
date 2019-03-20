@@ -18,6 +18,9 @@ export class AuthComponent implements OnInit, OnDestroy {
   @Output()
   formValid: EventEmitter<boolean> = new EventEmitter(false);
 
+  @Output()
+  onGoogleLogin: EventEmitter<any> = new EventEmitter(null);
+
   formValidSubs: Subscription;
 
   constructor(private fb: FormBuilder) {
@@ -30,8 +33,6 @@ export class AuthComponent implements OnInit, OnDestroy {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
 
-    this.authForm.get('email').patchValue('1@2.com');
-    this.authForm.get('password').patchValue('123456');
 
     this.formValidSubs = this.authForm.statusChanges.pipe(
       distinctUntilChanged()
@@ -50,6 +51,10 @@ export class AuthComponent implements OnInit, OnDestroy {
     if (this.authForm.valid) {
       this.submitted.emit(this.authForm);
     }
+  }
+
+  googleLogin(){
+    this.onGoogleLogin.emit(null);
   }
 
   ngOnDestroy(): void {
