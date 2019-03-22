@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AppFirebaseService } from 'src/app/firebase/firebase.service';
 import { Router } from '@angular/router';
@@ -10,6 +10,7 @@ import { FireBaseHttpErrorResponse } from 'src/app/models/firebase.model';
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class RegisterComponent implements OnInit {
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AppFirebaseService } from 'src/app/firebase/firebase.service';
 import { Router } from '@angular/router';
 import { CoreService } from 'src/app/core/core.service';
@@ -9,6 +9,7 @@ import { FormGroup } from '@angular/forms';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
 

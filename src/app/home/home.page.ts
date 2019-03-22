@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { AppFirebaseService } from '../firebase/firebase.service';
 import { Subscription, Observable } from 'rxjs';
 import { SharedService } from '../shared/services/shared.service';
@@ -11,6 +11,7 @@ import { switchMap } from 'rxjs/operators';
     selector: 'app-home',
     templateUrl: 'home.page.html',
     styleUrls: ['home.page.scss'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePage implements OnInit, OnDestroy {
 
