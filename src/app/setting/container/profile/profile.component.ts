@@ -64,7 +64,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         this.fire.addUserProfile(this.profileForm.value);
       }
 
-      this.core.displayToast(`Great, your new name is saved.`);
+      this.core.displayToast(`Changes saved.`);
 
     }
   }
