@@ -19,7 +19,7 @@ export class AppComponent implements OnInit, OnDestroy {
   user$: Observable<AppUser>;
   subscription: Subscription;
 
-  showSpinner = true;
+  showSpinner = false;
 
   public appPages = [
     {

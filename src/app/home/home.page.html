@@ -15,7 +15,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content >
+<ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="secondary">
       <ion-icon color="light" name="add" (click)="addTodo()"></ion-icon>
@@ -24,16 +24,16 @@
 
   <ng-container *ngIf="todoList$ | async as list else loading">
 
-    <ion-card class="welcome-card" color="light" *ngFor="let item of list | todoList : 'asd'" (click)="openTodo(item)">
+    <ion-card class="welcome-card" *ngFor="let item of list | todoList : 'asd'" (click)="openTodo(item)">
       <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
-      <ion-card-header color="light">
+      <ion-card-header>
+        <ion-card-title>{{item.title}}</ion-card-title>
         <ion-card-subtitle>
           <ion-icon name="clock"></ion-icon>
           {{item.timestamp | date : "M/d/yy, h:mm a"}}
         </ion-card-subtitle>
-        <ion-card-title>{{item.title}}</ion-card-title>
       </ion-card-header>
-      <ion-card-content color="light">
+      <ion-card-content>
         <p>{{item.desc}}</p>
       </ion-card-content>
     </ion-card>

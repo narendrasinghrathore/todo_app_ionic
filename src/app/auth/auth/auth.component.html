@@ -1,64 +1,64 @@
-<!-- <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>
-      <ng-content select=".heading"></ng-content>
-    </ion-title>
-  </ion-toolbar>
-</ion-header> -->
 <ion-content class="auth-form">
   <div class="div">
-    <div>
-      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-        <ion-item no-padding>
-          <ion-label>
-            <ion-icon name="person"></ion-icon>
-          </ion-label>
-          <ion-input type="text" formControlName="email" placeholder="Email"></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>
-            <ion-icon name="key"></ion-icon>
-          </ion-label>
-          <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
-        </ion-item>
-        <ng-content select=".btn"></ng-content>
-      </form>
-    </div>
-    <div>
-      <ion-item *ngIf="email.errors?.required && email.touched">
-        <ion-label>
-          Email is required.
-        </ion-label>
-        <ion-icon name="information-circle" slot="end"></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="email.errors?.email && email.touched">
-        <ion-label>
-          Invalid email
-        </ion-label>
-        <ion-icon name="information-circle" slot="end"></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="password.errors?.required && password.touched">
-        <ion-label>
-          Password required.
-        </ion-label>
-        <ion-icon name="information-circle" slot="end"></ion-icon>
-      </ion-item>
-      <ion-item *ngIf="password.errors?.minlength && password.touched">
-        <ion-label>
-          Password should be min(6) characters.
-        </ion-label>
-        <ion-badge color="light">
-          {{password.value.length}}
-        </ion-badge>
-        <ion-icon name="information-circle" slot="end"></ion-icon>
-      </ion-item>
-    </div>
-    <div>
-      <ng-content select=".action"></ng-content>
-    </div>
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          <ng-content select=".heading"></ng-content>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div>
+          <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <ion-item no-padding>
+              <ion-label>
+                <ion-icon name="person"></ion-icon>
+              </ion-label>
+              <ion-input type="text" formControlName="email" placeholder="Email"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-label>
+                <ion-icon name="key"></ion-icon>
+              </ion-label>
+              <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+            </ion-item>
+            <ng-content select=".btn"></ng-content>
+          </form>
+        </div>
+        <div>
+          <ion-item *ngIf="email.errors?.required && email.touched">
+            <ion-label>
+              Email is required.
+            </ion-label>
+            <ion-icon name="information-circle" slot="end"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="email.errors?.email && email.touched">
+            <ion-label>
+              Invalid email
+            </ion-label>
+            <ion-icon name="information-circle" slot="end"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="password.errors?.required && password.touched">
+            <ion-label>
+              Password required.
+            </ion-label>
+            <ion-icon name="information-circle" slot="end"></ion-icon>
+          </ion-item>
+          <ion-item *ngIf="password.errors?.minlength && password.touched">
+            <ion-label>
+              Password should be min(6) characters.
+            </ion-label>
+            <ion-badge color="light">
+              {{password.value.length}}
+            </ion-badge>
+            <ion-icon name="information-circle" slot="end"></ion-icon>
+          </ion-item>
+        </div>
+        <div>
+          <ng-content select=".action"></ng-content>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
     <!-- <div>
       <ion-buttons slot="end">
         <ion-button color="secondary" (click)="googleLogin()">

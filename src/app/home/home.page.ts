@@ -5,7 +5,7 @@ import { SharedService } from '../shared/services/shared.service';
 import { AppFirebaseCRUDService } from '../firebase/crud.service';
 import { Store } from 'store';
 import { Todo } from '../models/todo.model';
-import { switchMap } from 'rxjs/operators';
+import { CoreService } from '../core/core.service';
 
 @Component({
     selector: 'app-home',
@@ -23,7 +23,7 @@ export class HomePage implements OnInit, OnDestroy {
 
     constructor(private auth: AppFirebaseService,
         private shared: SharedService, private fire: AppFirebaseCRUDService,
-        private store: Store) { }
+        private store: Store, private core: CoreService) { }
 
     ngOnInit() {
 
@@ -35,7 +35,6 @@ export class HomePage implements OnInit, OnDestroy {
 
     login(): void {
         this.googleSignInSubs = this.auth.signInGoogle().subscribe(data => console.log(data));
-        // this.todoListSusb.add(this.googleSignInSubs);
     }
 
 
@@ -52,6 +51,7 @@ export class HomePage implements OnInit, OnDestroy {
         const { data } = await modal.onDidDismiss();
         if (data) {
             this.fire.updateTodo(data, item.key);
+            this.core.displayToast(`Changes saved`);
         }
     }
 

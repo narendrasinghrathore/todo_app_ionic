@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ChangeDetectionStrategy, ViewEncapsulation, Input } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Todo } from 'src/app/models/todo.model';
 import { ModalController } from '@ionic/angular';
@@ -36,6 +36,10 @@ export class AddTodoComponent implements OnInit {
 
   onClose() {
     this.modal.dismiss(this.todoForm.valid ? this.todoForm.value : null);
+  }
+
+  closePopUp() {
+    this.modal.dismiss();
   }
 
 }
