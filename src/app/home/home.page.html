@@ -24,7 +24,7 @@
 
   <ng-container *ngIf="todoList$ | async as list else loading">
 
-    <ion-card class="welcome-card" *ngFor="let item of list | todoList : 'asd'" (click)="openTodo(item)">
+    <ion-card class="welcome-card" *ngFor="let item of list | todoList : 'dsc'" (click)="openTodo(item)">
       <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
       <ion-card-header>
         <ion-card-title>{{item.title}}</ion-card-title>

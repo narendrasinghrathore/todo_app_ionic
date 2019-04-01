@@ -7,7 +7,7 @@ import { Todo } from 'src/app/models/todo.model';
 export class TodoListPipe implements PipeTransform {
 
   transform(value: Todo[], args?: any): any {
-    if (args) { // means desc order
+    if (args === 'dsc' && args) { // means descending order
       return value.sort((a, b) => {
         if (a.timestamp > b.timestamp) {
           return -1;
@@ -18,9 +18,19 @@ export class TodoListPipe implements PipeTransform {
 
         return 0;
       });
-    }
+    } else {
+      // ascending order
+      return value.sort((a, b) => {
+        if (a.timestamp < b.timestamp) {
+          return -1;
+        }
+        if (a.timestamp > b.timestamp) {
+          return 1;
+        }
 
-    return value; // default is asc
+        return 0;
+      });
+    }
   }
 
 }
