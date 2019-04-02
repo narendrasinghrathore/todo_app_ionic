@@ -39,6 +39,7 @@ export class AppFirebaseCRUDService {
     addTodo(item: Todo) {
         const todo = { ...item };
         todo.timestamp = new Date().getTime();
+        todo.date = new Date().toDateString();
         return this.fireDB.list(`${this.tableName}/${this.uid}`).push(todo);
     }
 

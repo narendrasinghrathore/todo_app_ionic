@@ -6,15 +6,16 @@ import { IonicModule } from '@ionic/angular';
 import { SharedService } from './services/shared.service';
 import { LoadingComponent } from './loading/loading.component';
 import { TodoListPipe } from './pipes/todo-list.pipe';
+import { DeleteTodoComponent } from './delete-todo/delete-todo.component';
 @NgModule({
-  declarations: [AddTodoComponent, LoadingComponent, TodoListPipe],
+  declarations: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IonicModule
   ],
-  entryComponents: [AddTodoComponent],
-  exports: [AddTodoComponent, LoadingComponent, TodoListPipe]
+  entryComponents: [AddTodoComponent, DeleteTodoComponent],
+  exports: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

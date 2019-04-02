@@ -55,6 +55,15 @@ export class HomePage implements OnInit, OnDestroy {
         }
     }
 
+    async confirmDelete(item: Todo){
+        const modal = await this.shared.confirmDeleteDialog(item);
+        const { data } = await modal.onDidDismiss();
+        if (data) {
+            await this.fire.deleteTodo(item.key);
+            this.core.displayToast(`Todo removed`);
+        }
+    }
+
 
     ngOnDestroy() {
         this.todoListSusb.unsubscribe();

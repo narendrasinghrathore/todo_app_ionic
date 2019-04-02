@@ -13,6 +13,7 @@ import { CoreModule } from './core/core.module';
 import { GuardModule } from './guards/guard.module';
 import { Store } from 'store';
 import { SharedModule } from './shared/shared.module';
+import { CalendarModule } from './calendar/calendar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +26,7 @@ import { SharedModule } from './shared/shared.module';
     GuardModule.forRoot(),
     SharedModule.forRoot(),
     AppRoutingModule,
+    CalendarModule.forRoot()
   ],
   providers: [
     Store,

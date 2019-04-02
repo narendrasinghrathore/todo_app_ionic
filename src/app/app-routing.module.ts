@@ -5,8 +5,14 @@ import { HomeGuard } from './guards/home.guard';
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'calendar',
     pathMatch: 'full'
+  },
+  {
+    path: 'calendar',
+    loadChildren: './calendar/calendar.module#CalendarModule',
+    pathMatch: 'full',
+    canActivate: [HomeGuard]
   },
   {
     path: 'home',

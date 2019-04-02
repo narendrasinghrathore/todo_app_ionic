@@ -4,5 +4,6 @@ export interface Todo {
     desc?: any;
     timestamp?: number;
     key?: string;
+    date?: string;
     exist?: () => boolean;
 }

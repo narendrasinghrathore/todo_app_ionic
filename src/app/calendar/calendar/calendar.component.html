@@ -1,0 +1,21 @@
+<ion-header color="primary">
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title color="light">
+      Calendar
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="selectToday()">
+          <ion-icon name="today"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <app-week [week]="week" (selectedDate)="getSelectedDate($event)"
+  [defaultSelectedDate]="todayDate"></app-week>
+
+</ion-content>

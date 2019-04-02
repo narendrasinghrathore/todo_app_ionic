@@ -26,6 +26,10 @@ export class AppComponent implements OnInit, OnDestroy {
       title: 'Home',
       url: '/home',
       icon: 'home'
+    }, {
+      title: 'Calendar',
+      url: '/calendar',
+      icon: 'calendar'
     },
     {
       title: 'Setting',
