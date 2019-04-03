@@ -7,15 +7,18 @@ import { SharedService } from './services/shared.service';
 import { LoadingComponent } from './loading/loading.component';
 import { TodoListPipe } from './pipes/todo-list.pipe';
 import { DeleteTodoComponent } from './delete-todo/delete-todo.component';
+import { ColorSelectionComponent } from './color-selection/color-selection.component';
+import { HeaderComponent } from './header/header.component';
 @NgModule({
-  declarations: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe],
+  declarations: [AddTodoComponent, DeleteTodoComponent,
+    LoadingComponent, TodoListPipe, ColorSelectionComponent, HeaderComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IonicModule
   ],
-  entryComponents: [AddTodoComponent, DeleteTodoComponent],
-  exports: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe]
+  entryComponents: [AddTodoComponent, DeleteTodoComponent, ColorSelectionComponent, ColorSelectionComponent],
+  exports: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe, HeaderComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

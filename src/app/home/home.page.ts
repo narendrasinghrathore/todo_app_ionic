@@ -21,7 +21,9 @@ export class HomePage implements OnInit, OnDestroy {
 
     todoListSusb: Subscription;
 
-    constructor(private auth: AppFirebaseService,
+    appState = this.appFire.appStatus$;
+
+    constructor(private appFire: AppFirebaseService,
         private shared: SharedService, private fire: AppFirebaseCRUDService,
         private store: Store, private core: CoreService) { }
 
@@ -34,7 +36,7 @@ export class HomePage implements OnInit, OnDestroy {
     }
 
     login(): void {
-        this.googleSignInSubs = this.auth.signInGoogle().subscribe(data => console.log(data));
+        this.googleSignInSubs = this.appFire.signInGoogle().subscribe(data => console.log(data));
     }
 
 
@@ -55,7 +57,7 @@ export class HomePage implements OnInit, OnDestroy {
         }
     }
 
-    async confirmDelete(item: Todo){
+    async confirmDelete(item: Todo) {
         const modal = await this.shared.confirmDeleteDialog(item);
         const { data } = await modal.onDidDismiss();
         if (data) {

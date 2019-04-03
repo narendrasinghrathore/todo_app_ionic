@@ -6,10 +6,13 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { Store } from 'store';
 import { AppUser } from '../models/User';
 import { tap } from 'rxjs/operators';
+import * as firebase from 'firebase/app';
 @Injectable()
 export class AppFirebaseService {
 
   uid$: BehaviorSubject<string> = new BehaviorSubject(null);
+
+  appStatus$: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
   auth$ = this.fireAUTH.authState.pipe(
     tap(
@@ -39,7 +42,21 @@ export class AppFirebaseService {
   }
 
 
-  constructor(private fireAUTH: AngularFireAuth, private store: Store) {
+  constructor(private fireAUTH: AngularFireAuth, private store: Store,
+  ) {
+    this.intiApp();
+  }
+
+
+  intiApp() {
+    const connectedRef = firebase.database().ref('.info/connected');
+    connectedRef.on('value', (snap) => {
+      if (snap.val() === true) {
+        this.appStatus$.next(true);
+      } else {
+        this.appStatus$.next(false);
+      }
+    });
   }
 
   signInGoogle(): Observable<any> {

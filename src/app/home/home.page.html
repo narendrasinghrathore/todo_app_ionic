@@ -1,20 +1,4 @@
-<ion-header color="primary">
-  <ion-toolbar color="primary">
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title color="light">
-      Home
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon name="funnel"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-
-  </ion-toolbar>
-</ion-header>
-
+<app-header title="Home" [online]="appState | async" ></app-header>
 <ion-content>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button color="secondary">
