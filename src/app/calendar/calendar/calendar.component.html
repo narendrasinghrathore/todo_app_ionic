@@ -7,15 +7,22 @@
       Calendar
     </ion-title>
     <ion-buttons slot="end">
+      <ion-button>
+        <ion-datetime [value]="selectedDate.toISOString()" placeholder="Select date" display-format="MMM DD, YYYY"
+          picker-format="MMM DD, YYYY" (ionChange)="updateDate($event)"></ion-datetime>
+      </ion-button>
       <ion-button (click)="selectToday()">
-          <ion-icon name="today"></ion-icon>
+        <ion-icon name="today"></ion-icon>
       </ion-button>
     </ion-buttons>
 
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <app-week [week]="week" (selectedDate)="getSelectedDate($event)"
+
+  <app-week [week]="week" (selectedDate)="getSelectedDateFromWeek($event)" 
   [defaultSelectedDate]="todayDate"></app-week>
+
+  <app-month [month]="month"></app-month>
 
 </ion-content>

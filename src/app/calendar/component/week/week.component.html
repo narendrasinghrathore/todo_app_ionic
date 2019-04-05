@@ -1,6 +1,6 @@
-<ion-segment scrollable [value]="defaultSelectedDate?.displayDate">
-  <ion-segment-button layout="icon-top" [value]="item.displayDate"
-  (ionSelect)="getSelectedDate(item)" *ngFor="let item of week">
+<ion-segment scrollable>
+  <ion-segment-button layout="icon-top" [checked]="defaultSelectedDate?.displayDate === item?.displayDate"
+    [value]="item?.displayDate" (ionSelect)="getSelectedDate(item)" *ngFor="let item of week">
     <ion-icon name="calendar"></ion-icon>
     <ion-label>{{item.date | date }}</ion-label>
   </ion-segment-button>

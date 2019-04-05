@@ -1,10 +1,14 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarService {
+
+  getTotalDaysOfMonth$: BehaviorSubject<CalendarMonth[]> = new BehaviorSubject([]);
+
+  getWeekFromDay$: BehaviorSubject<CalendarWeek[]> = new BehaviorSubject([]);
 
   /**
    * Return an array of days of passed year and month
@@ -12,9 +16,20 @@ export class CalendarService {
    * Year as number
    * @param month : number 1-12
    */
-  getTotalDaysOfMonth(year: number, month: number): Date[] {
+  getTotalDaysOfMonth(year: number, month: number) {
     const lastDay = new Date(year, month, 0).getDate();
-    return [...Array(lastDay).fill(1).map((x, y) => x + y)];
+    const arr = [...Array(lastDay).fill({
+      date: new Date(year, month - 1, 1),
+      day: 0
+    }).map((x: CalendarMonth, index) => {
+      const date = new Date(year, month - 1, index + 1);
+      const day = index + 1;
+      if (new Date().getDate() === date.getDate()) {
+        return { ...x, date, day, today: true };
+      }
+      return { ...x, date, day };
+    })];
+    this.getTotalDaysOfMonth$.next(arr);
   }
 
   /**
@@ -22,7 +37,7 @@ export class CalendarService {
    * week of passing day
    * @param day : number
    */
-  getWeekFromDay(date: Date): CalendarWeek[] {
+  getWeekFromDay(date: Date) {
     const day = date.getDay();
     const array: CalendarWeek[] = [];
     for (let i = 0; i < 7; i++) {
@@ -45,8 +60,7 @@ export class CalendarService {
         });
       }
     }
-    return array;
-
+    this.getWeekFromDay$.next(array);
   }
 }
 
@@ -56,4 +70,11 @@ export interface CalendarWeek {
   displayDate: string;
   dayOfWeek: number;
   currentDate: boolean;
+}
+
+
+export interface CalendarMonth {
+  date: Date;
+  day: number;
+  today?: boolean;
 }

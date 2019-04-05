@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { CalendarWeek } from '../../calendar.service';
 @Component({
   selector: 'app-week',
@@ -6,7 +6,7 @@ import { CalendarWeek } from '../../calendar.service';
   styleUrls: ['./week.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class WeekComponent implements OnInit {
+export class WeekComponent {
 
   @Input()
   week: CalendarWeek[];
@@ -21,13 +21,6 @@ export class WeekComponent implements OnInit {
   defaultSelectedDate: CalendarWeek;
 
   constructor() { }
-
-  ngOnInit() {
-    const defaultDate = this.week.filter(data => data.currentDate);
-    if (defaultDate.length > 0) {
-      this.defaultSelectedDate = defaultDate[0];
-    }
-  }
 
   getSelectedDate(item: CalendarWeek) {
     this.defaultSelectedDate = item;

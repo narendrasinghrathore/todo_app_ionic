@@ -1,0 +1,30 @@
+.div {
+  display: flex;
+  justify-content: center;
+
+  .ul {
+    list-style: none;
+    display: flex;
+    color: white;
+    flex-wrap: wrap;
+    padding: 0;
+    margin: 10px;
+    flex-direction: row;
+
+    li {
+      color: #333333;
+      width: 100px;
+      margin: 1px;
+      text-align: center;
+
+      border-radius: 3px;
+      box-sizing: border-box;
+      box-shadow: -1px 0px 4px -1px #333333;
+      height: 100px;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
