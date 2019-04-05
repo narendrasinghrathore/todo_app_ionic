@@ -1,14 +1,11 @@
-<ion-content>
-  <div class="div">
-      <ul *ngIf="month" class="ul">
-          <li *ngFor="let item of month">
-            <ion-ripple-effect></ion-ripple-effect>
-            <ion-label>
-              <ion-icon name="calendar"></ion-icon>
-              {{item.date | date: 'MMMM, d' }}
-            </ion-label>
-          </li>
-        </ul>
-  </div>
-    
-</ion-content>
+<div class="div">
+  <ul *ngIf="month" class="ul">
+    <li *ngFor="let item of month">
+      <ion-ripple-effect></ion-ripple-effect>
+      <ion-label>
+        <ion-icon name="calendar"></ion-icon>
+        {{item.date | date: 'MMMM, d' }}
+      </ion-label>
+    </li>
+  </ul>
+</div>
