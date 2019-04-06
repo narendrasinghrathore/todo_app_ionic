@@ -9,16 +9,19 @@ import { TodoListPipe } from './pipes/todo-list.pipe';
 import { DeleteTodoComponent } from './delete-todo/delete-todo.component';
 import { ColorSelectionComponent } from './color-selection/color-selection.component';
 import { HeaderComponent } from './header/header.component';
+import { AddTodoContainerComponent } from './container/add-todo-container/add-todo-container.component';
+import { TodoListComponent } from './components/todo-list/todo-list.component';
 @NgModule({
   declarations: [AddTodoComponent, DeleteTodoComponent,
-    LoadingComponent, TodoListPipe, ColorSelectionComponent, HeaderComponent],
+    LoadingComponent, TodoListPipe, ColorSelectionComponent, HeaderComponent, AddTodoContainerComponent, TodoListComponent],
   imports: [
     CommonModule,
     ReactiveFormsModule,
     IonicModule
   ],
   entryComponents: [AddTodoComponent, DeleteTodoComponent, ColorSelectionComponent, ColorSelectionComponent],
-  exports: [AddTodoComponent, DeleteTodoComponent, LoadingComponent, TodoListPipe, HeaderComponent]
+  exports: [AddTodoComponent, DeleteTodoComponent,
+    LoadingComponent, TodoListPipe, HeaderComponent, AddTodoContainerComponent, TodoListComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

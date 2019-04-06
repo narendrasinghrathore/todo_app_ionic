@@ -8,6 +8,7 @@ import { CalendarService } from './calendar.service';
 
 import { MonthComponent } from './component/month/month.component';
 import { WeekComponent } from './component/week/week.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { WeekComponent } from './component/week/week.component';
   imports: [
     CommonModule,
     IonicModule,
+    SharedModule,
     RouterModule.forChild([
       {
         path: '', component: CalendarComponent, pathMatch: 'full'

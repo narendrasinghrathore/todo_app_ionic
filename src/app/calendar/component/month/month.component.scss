@@ -1,7 +1,6 @@
 .div {
-  
   .ul {
-    background-color: #7ccd69;
+    // background-color: #7ccd69;
     list-style: none;
     display: flex;
     color: white;
@@ -10,17 +9,16 @@
     margin: 10px;
 
     li {
-      color: #333333;
-      margin: 1px;
-      text-align: center;
-      line-height: 54px;
-      border-radius: 3px;
+      ion-button{
+        --color: #333333;
+      }
+      
+      margin: 3px;
       box-sizing: border-box;
-      box-shadow: -1px 0px 4px -1px #333333;
-      height: 57px;
       flex: 19%;
       max-width: 25%;
       padding: 0 4px;
+      border-bottom: 1px dashed #dedede;
     }
 
     /* Responsive layout - makes a two column-layout instead of four columns */
