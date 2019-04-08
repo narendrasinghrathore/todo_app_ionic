@@ -1,11 +1,6 @@
 <app-header title="Home" [online]="appState | async"></app-header>
+<div appAddTodoContainer color="dark" background="danger"></div>
 <ion-content>
-    <!-- <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-        <ion-fab-button color="secondary">
-          <ion-icon color="light" name="add" (click)="addTodo()"></ion-icon>
-        </ion-fab-button>
-      </ion-fab> -->
-  <app-add-todo-container></app-add-todo-container>
   <ng-container *ngIf="todoList$ | async as list else loading">
     <app-todo-list [list]="list"></app-todo-list>
   </ng-container>
