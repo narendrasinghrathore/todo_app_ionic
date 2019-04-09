@@ -19,6 +19,13 @@
   </ion-toolbar>
 </ion-header>
 <app-add-todo-container color="dark"></app-add-todo-container>
+<app-week [week]="week" (selectedDate)="getSelectedDateFromWeek($event)" [defaultSelectedDate]="todayDate"></app-week>
 <ion-content>
-  <app-week [week]="week" (selectedDate)="getSelectedDateFromWeek($event)" [defaultSelectedDate]="todayDate"></app-week>
+  <ng-container *ngIf="todoList$ | async as list else loading">
+    <app-todo-list [list]="list" (open)="openTodo($event)" (delete)="confirmDelete($event)"></app-todo-list>
+  </ng-container>
+  <ng-template #loading>
+    <app-loading>
+    </app-loading>
+  </ng-template>
 </ion-content>

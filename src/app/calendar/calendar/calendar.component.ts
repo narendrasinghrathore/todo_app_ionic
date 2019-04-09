@@ -1,7 +1,13 @@
 import { Component, OnInit, ChangeDetectionStrategy, OnDestroy } from '@angular/core';
 import { CalendarService, CalendarWeek, CalendarMonth } from '../calendar.service';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable } from 'rxjs';
+import { Todo } from '../../models/todo.model';
+import { AppFirebaseCRUDService } from '../../firebase/crud.service';
+import { Store } from 'store';
+import { switchMap, } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { SharedService } from '../../shared/services/shared.service';
+import { CoreService } from '../../core/core.service';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -22,11 +28,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   todayDate: CalendarWeek;
 
-  constructor(private calendarService: CalendarService) { }
+  todoList$: Observable<Todo[]>;
+
+  todoListSusb: Subscription;
+
+
+  constructor(private calendarService: CalendarService, private fire: AppFirebaseCRUDService,
+    private store: Store, private shared: SharedService, private core: CoreService) { }
 
   ngOnInit() {
 
+    this.todoList$ = this.store.select<Todo[]>('filteredTodos');
+
     const date = new Date();
+
     { /// Subscribe and get total days in week
       this.week$ = this.calendarService.getWeekFromDay$.subscribe((data) => {
         this.week = [...data];
@@ -44,10 +59,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
 
     this.week$.add(this.month$);
+    // get todo for today i.e current date
+    this.getSelectedDateFromWeek(this.todayDate);
+
   }
 
   getSelectedDateFromWeek(date: CalendarWeek) {
-    this.selectedDate = date.date;
+    this.todoListSusb = of([])
+      .pipe(
+        switchMap(
+          () => this.fire.getListForGivenDate$(date.date.toDateString())
+        )
+      ).subscribe();
   }
 
 
@@ -73,6 +96,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const defaultDate = this.week.filter(data => data.currentDate);
     if (defaultDate.length > 0) {
       this.todayDate = { ...defaultDate[0] };
+    }
+  }
+
+  async openTodo(item: Todo) {
+    const modal = await this.shared.addTodoDialog(item);
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      this.fire.updateTodo(data, item.key);
+      this.core.displayToast(`Changes saved`);
+    }
+  }
+
+  async confirmDelete(item: Todo) {
+    const modal = await this.shared.confirmDeleteDialog(item);
+    const { data } = await modal.onDidDismiss();
+    if (data) {
+      await this.fire.deleteTodo(item.key);
+      this.core.displayToast(`Todo removed`);
     }
   }
 

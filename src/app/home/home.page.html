@@ -2,7 +2,7 @@
 <div appAddTodoContainer color="dark" background="danger"></div>
 <ion-content>
   <ng-container *ngIf="todoList$ | async as list else loading">
-    <app-todo-list [list]="list"></app-todo-list>
+    <app-todo-list [list]="list" (open)="openTodo($event)"></app-todo-list>
   </ng-container>
   <ng-template #loading>
     <app-loading>

@@ -14,13 +14,15 @@ export interface State {
     user: AppUser;
     todos: Todo[];
     userProfileData: AppUserData;
+    filteredTodos: Todo[];
     [key: string]: any;
 }
 
 const state: State = {
     user: undefined,
     todos: undefined,
-    userProfileData: undefined
+    userProfileData: undefined,
+    filteredTodos: undefined
 };
 
 export class Store {

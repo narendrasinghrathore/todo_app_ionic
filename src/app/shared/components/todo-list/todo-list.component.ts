@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, ChangeDetectionStrategy, ViewEncapsulation, Output } from '@angular/core';
 import { Todo } from 'src/app/models/todo.model';
+import { EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-todo-list',
@@ -11,11 +12,23 @@ import { Todo } from 'src/app/models/todo.model';
 export class TodoListComponent implements OnInit {
 
   @Input()
-  list:  Todo[] = [];
+  list: Todo[] = [];
+
+  @Output()
+  open: EventEmitter<Todo> = new EventEmitter();
+
+  @Output()
+  delete: EventEmitter<Todo> = new EventEmitter();
   constructor() { }
 
+  openTodo(item: Todo) {
+    this.open.emit(item);
+  }
 
+  deleteTodo(item: Todo) {
+    this.delete.emit(item);
+  }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
 }

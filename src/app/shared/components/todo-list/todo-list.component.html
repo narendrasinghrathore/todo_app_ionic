@@ -1,22 +1,30 @@
 <ion-card class="welcome-card" *ngFor="let item of list | todoList : 'dsc'">
-    <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
-    <ion-card-header>
+  <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
+  <ion-card-header>
 
-      <ion-card-title (click)="openTodo(item)">{{item.title}}
-      </ion-card-title>
-      <ion-card-subtitle>
-        <ion-icon name="clock"></ion-icon>
-        {{item.timestamp | date : "M/d/yy, h:mm a"}}
-      </ion-card-subtitle>
-    </ion-card-header>
-    <ion-card-content>
-      <ion-button fill="clear" (click)="openTodo(item)">
-        <ion-icon slot="icon-only" name="open"></ion-icon>
+    <ion-card-title (click)="openTodo(item)">{{item.title}}
+    </ion-card-title>
+    <ion-card-subtitle>
+      <ion-icon name="clock"></ion-icon>
+      {{item.timestamp | date : "M/d/yy, h:mm a"}}
+    </ion-card-subtitle>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-button fill="clear" (click)="openTodo(item)">
+      <ion-icon slot="icon-only" name="open"></ion-icon>
+    </ion-button>
+    <ion-buttons class="ion-float-right">
+      <ion-button fill="clear" (click)="deleteTodo(item)">
+        <ion-icon name="trash"></ion-icon>
       </ion-button>
-      <ion-buttons class="ion-float-right">
-        <ion-button fill="clear" (click)="confirmDelete(item)">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </ion-card-content>
-  </ion-card>
+    </ion-buttons>
+  </ion-card-content>
+</ion-card>
+<ng-container *ngIf="list.length === 0">
+  <ion-item>
+    <ion-label>
+      <ion-icon name="information-circle" slot="end"></ion-icon>
+      Nothing found.
+    </ion-label>
+  </ion-item>
+</ng-container>
