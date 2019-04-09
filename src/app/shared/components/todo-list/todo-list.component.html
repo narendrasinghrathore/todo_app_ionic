@@ -10,10 +10,11 @@
     </ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
-    <ion-button fill="clear" (click)="openTodo(item)">
-      <ion-icon slot="icon-only" name="open"></ion-icon>
-    </ion-button>
+
     <ion-buttons class="ion-float-right">
+      <ion-button fill="clear" (click)="openTodo(item)">
+        <ion-icon slot="icon-only" name="open"></ion-icon>
+      </ion-button>
       <ion-button fill="clear" (click)="deleteTodo(item)">
         <ion-icon name="trash"></ion-icon>
       </ion-button>

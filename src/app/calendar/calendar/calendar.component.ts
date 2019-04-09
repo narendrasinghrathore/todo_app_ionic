@@ -78,6 +78,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedDate = new Date(date['detail']['value']);
     this.calendarService.getTotalDaysOfMonth(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1);
     this.calendarService.getWeekFromDay(this.selectedDate);
+    this.getSelectedDateFromWeek(this.todayDate);
   }
 
   selectToday() {
