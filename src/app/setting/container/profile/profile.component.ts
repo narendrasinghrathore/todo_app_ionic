@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppFirebaseUserService } from 'src/app/firebase/user.service';
 import { CoreService } from 'src/app/core/core.service';
 import { Subscription } from 'rxjs';
-import { Store } from 'store';
+import { Store, AppStateProps } from 'store';
 import { AppUserData } from 'src/app/models/firebase.model';
 
 @Component({
@@ -33,7 +33,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       gender: ['']
     });
 
-    const userStoreSubs = this.store.select('userProfileData').subscribe(
+    const userStoreSubs = this.store.select(AppStateProps.userProfileData).subscribe(
       (val: AppUserData[]) => {
         if (val && val.length) {
           const userData_ = val[0];

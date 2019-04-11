@@ -8,21 +8,26 @@ import { AppUser } from './models/User';
 import { AppUserData } from './models/firebase.model';
 
 
-
+export enum AppStateProps {
+    user = 'user',
+    todos = 'todos',
+    userProfileData = 'userProfileData',
+    filteredTodos = 'filteredTodos'
+}
 
 export interface State {
-    user: AppUser;
-    todos: Todo[];
-    userProfileData: AppUserData;
-    filteredTodos: Todo[];
+    [AppStateProps.user]: AppUser;
+    [AppStateProps.todos]: Todo[];
+    [AppStateProps.userProfileData]: AppUserData;
+    [AppStateProps.filteredTodos]: Todo[];
     [key: string]: any;
 }
 
 const state: State = {
-    user: undefined,
-    todos: undefined,
-    userProfileData: undefined,
-    filteredTodos: undefined
+    [AppStateProps.user]: undefined,
+    [AppStateProps.todos]: undefined,
+    [AppStateProps.userProfileData]: undefined,
+    [AppStateProps.filteredTodos]: undefined
 };
 
 export class Store {
@@ -36,14 +41,14 @@ export class Store {
         return this.subject.value;
     }
 
-    select<T>(name: string): Observable<T> {
+    select<T>(name: AppStateProps): Observable<T> {
         return this.store
             .pipe(
                 pluck(name)
             );
     }
 
-    set(name: string, state_: any) {
+    set(name: AppStateProps, state_: any) {
         this.subject.next({ ...this.value, [name]: state_ });
     }
 }

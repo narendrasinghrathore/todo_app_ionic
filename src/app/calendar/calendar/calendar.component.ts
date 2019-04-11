@@ -3,7 +3,7 @@ import { CalendarService, CalendarWeek, CalendarMonth } from '../calendar.servic
 import { Subscription, Observable } from 'rxjs';
 import { Todo } from '../../models/todo.model';
 import { AppFirebaseCRUDService } from '../../firebase/crud.service';
-import { Store } from 'store';
+import { Store, AppStateProps } from 'store';
 import { switchMap, } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
@@ -38,7 +38,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.todoList$ = this.store.select<Todo[]>('filteredTodos');
+    this.fire.offlineDatabaseEvent.subscribe(() => {
+      this.getTodosForSelectedDate(this.todayDate);
+    });
+
+    this.todoList$ = this.store.select<Todo[]>(AppStateProps.filteredTodos);
 
     const date = new Date();
 
@@ -60,11 +64,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     this.week$.add(this.month$);
     // get todo for today i.e current date
-    this.getSelectedDateFromWeek(this.todayDate);
+    this.getTodosForSelectedDate(this.todayDate);
 
   }
 
-  getSelectedDateFromWeek(date: CalendarWeek) {
+  getTodosForSelectedDate(date: CalendarWeek) {
     this.todoListSusb = of([])
       .pipe(
         switchMap(
@@ -78,7 +82,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.selectedDate = new Date(date['detail']['value']);
     this.calendarService.getTotalDaysOfMonth(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1);
     this.calendarService.getWeekFromDay(this.selectedDate);
-    this.getSelectedDateFromWeek(this.todayDate);
+    this.getTodosForSelectedDate(this.todayDate);
   }
 
   selectToday() {
@@ -104,7 +108,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const modal = await this.shared.addTodoDialog(item);
     const { data } = await modal.onDidDismiss();
     if (data) {
-      this.fire.updateTodo(data, item.key);
+      this.fire.updateTodo({ ...item, ...data }, item.key);
       this.core.displayToast(`Changes saved`);
     }
   }

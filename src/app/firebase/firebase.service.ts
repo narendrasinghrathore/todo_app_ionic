@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { auth } from 'firebase/app';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { Store } from 'store';
+import { Store, AppStateProps } from 'store';
 import { AppUser } from '../models/User';
 import { tap } from 'rxjs/operators';
 import * as firebase from 'firebase/app';
@@ -18,7 +17,7 @@ export class AppFirebaseService {
     tap(
       next => {
         if (!next) {
-          this.store.set('user', null);
+          this.store.set(AppStateProps.user, null);
           return;
         }
         const user: AppUser = {
@@ -29,7 +28,7 @@ export class AppFirebaseService {
 
         this.uid$.next(user.uid);
 
-        this.store.set('user', user);
+        this.store.set(AppStateProps.user, user);
       }
     ));
 

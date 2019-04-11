@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppFirebaseService } from './firebase/firebase.service';
 import { Observable, Subscription, timer } from 'rxjs';
 import { AppUser } from './models/User';
-import { Store } from 'store';
+import { Store, AppStateProps } from 'store';
 
 @Component({
   selector: 'app-root',
@@ -23,11 +23,11 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public appPages = [
     {
-      title: 'Home',
+      title: 'Dashboard',
       url: '/home',
       icon: 'home'
     }, {
-      title: 'Calendar',
+      title: 'Home',
       url: '/calendar',
       icon: 'calendar'
     },
@@ -65,7 +65,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.appFire.auth$.subscribe();
-    this.user$ = this.store.select<AppUser>('user');
+    this.user$ = this.store.select<AppUser>(AppStateProps.user);
   }
 
   ngOnDestroy() {

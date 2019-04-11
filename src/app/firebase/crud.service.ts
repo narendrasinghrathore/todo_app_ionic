@@ -1,53 +1,42 @@
 import { Injectable } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Todo } from '../models/todo.model';
-import { AppFirebaseService } from './firebase.service';
-import { map, tap } from 'rxjs/operators';
-import { Store } from 'store';
-import { environment } from '../../environments/environment';
+import { tap } from 'rxjs/operators';
+import { Store, AppStateProps } from 'store';
+import { AppFactoryService } from './factory.service';
+import { AppOnlineStorageService } from './online-storage.service';
+import { AppOfflineStorageService, DatabaseEvent } from './offline-storage.service';
 @Injectable()
 export class AppFirebaseCRUDService {
 
-    tableName = 'todos';
+    offlineDatabaseEvent = this.appStorage.dbChanges;
 
-    uid = this.fireService.uid$.value;
-
-    db = this.fireDB.database;
-
-    dbRef = this.db.ref().child(this.tableName);
-
-    get url() {
-        return `${this.tableName}/${this.fireService.uid$.value}`;
+    todoList$(): Observable<Todo[]> {
+        return this.appStorage.getAllTodo().pipe(
+            tap(next => this.store.set(AppStateProps.todos, next))
+        );
     }
 
-    todoList$(url): Observable<Todo[]> {
-        return this.fireDB.list(url)
-            .snapshotChanges()
-            .pipe(
-                map(changes => changes.map(
-                    c => ({ key: c.payload.key, ...c.payload.val() })
-                ))
-                , tap((next) => {
-
-                    this.store.set('todos', next);
-                }
-                ));
+    constructor(private appStorage: AppOfflineStorageService,
+        private store: Store,
+        private appFactory: AppFactoryService) {
+        this.setStorageInstance();
     }
 
-    constructor(private fireDB: AngularFireDatabase,
-        private fireService: AppFirebaseService, private store: Store) {
+    /**
+     * Instance of app storage
+     */
+    setStorageInstance() {
+        this.appStorage = this.appFactory.OfflineIndexDBStorage;
     }
 
     getListForGivenDate$(val: any, orderBy: string = 'date'): Observable<Todo[]> {
-        return this.fireDB.list(this.url,
-            (a) => a.orderByChild(orderBy).startAt(val).endAt(val)).snapshotChanges()
-            .pipe(map(changes => changes.map(
-                c => ({ key: c.payload.key, ...c.payload.val() })
-            ))
-                , tap((next) => {
-                    this.store.set('filteredTodos', next);
-                }));
+        return this.appStorage.getListForGivenDate$(val, orderBy).pipe(
+            // tap((next) => {
+            //     console.log(next)
+            //     this.store.set(AppStateProps.filteredTodos, next);
+            // })
+            );
     }
 
 
@@ -56,14 +45,15 @@ export class AppFirebaseCRUDService {
         const todo = { ...item };
         todo.timestamp = new Date().getTime();
         todo.date = new Date().toDateString();
-        return this.fireDB.list(`${this.tableName}/${this.uid}`).push(todo);
+        todo.key = todo.timestamp.toString();
+        return this.appStorage.addTodo(todo);
     }
 
     updateTodo(item: Todo, key: string) {
-        return this.fireDB.object(`${this.tableName}/${this.uid}/${key}`).update(item);
+        return this.appStorage.updateTodo(item, key);
     }
 
     deleteTodo(key: string) {
-        return this.fireDB.list(`${this.tableName}/${this.uid}`).remove(key);
+        return this.appStorage.deleteTodo(key);
     }
 }

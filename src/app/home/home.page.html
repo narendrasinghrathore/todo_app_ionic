@@ -1,11 +1,1 @@
-<app-header title="Home" [online]="appState | async"></app-header>
-<div appAddTodoContainer color="dark" background="danger"></div>
-<ion-content>
-  <ng-container *ngIf="todoList$ | async as list else loading">
-    <app-todo-list [list]="list" (open)="openTodo($event)"></app-todo-list>
-  </ng-container>
-  <ng-template #loading>
-    <app-loading>
-    </app-loading>
-  </ng-template>
-</ion-content>
+<app-header title="Dashboard" [online]="appState | async"></app-header>

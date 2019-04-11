@@ -4,7 +4,7 @@ import { FirebaseUser, AppUserData } from '../models/firebase.model';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { Store } from 'store';
+import { Store, AppStateProps } from 'store';
 
 
 @Injectable()
@@ -26,7 +26,7 @@ export class AppFirebaseUserService {
                 map(changes => changes.map(
                     c => ({ key: c.payload.key, ...c.payload.val() })
                 )),
-                tap((next) => this.store.set('userProfileData', next))
+                tap((next) => this.store.set(AppStateProps.userProfileData, next))
             );
     }
 

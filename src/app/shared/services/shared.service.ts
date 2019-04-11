@@ -24,7 +24,7 @@ export class SharedService {
     const modal = await this.modalController.create({
       component: DeleteTodoComponent,
       componentProps: { todoItem },
-      cssClass:['modal']
+      cssClass: ['modal']
     });
     await modal.present();
     return modal;
