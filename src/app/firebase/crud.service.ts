@@ -4,8 +4,8 @@ import { Todo } from '../models/todo.model';
 import { tap } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { AppFactoryService } from './factory.service';
-import { AppOnlineStorageService } from './online-storage.service';
-import { AppOfflineStorageService, DatabaseEvent } from './offline-storage.service';
+import { AppOfflineStorageService } from './offline-storage.service';
+import { AppFirebaseService } from './firebase.service';
 @Injectable()
 export class AppFirebaseCRUDService {
 
@@ -19,8 +19,16 @@ export class AppFirebaseCRUDService {
 
     constructor(private appStorage: AppOfflineStorageService,
         private store: Store,
-        private appFactory: AppFactoryService) {
+        private appFactory: AppFactoryService, appFirebase: AppFirebaseService) {
         this.setStorageInstance();
+
+        appFirebase.appStatus$.subscribe(appOnline => {
+            if (appOnline) {
+                this.syncDataOnline();
+            }
+        });
+
+
     }
 
     /**
@@ -31,12 +39,7 @@ export class AppFirebaseCRUDService {
     }
 
     getListForGivenDate$(val: any, orderBy: string = 'date'): Observable<Todo[]> {
-        return this.appStorage.getListForGivenDate$(val, orderBy).pipe(
-            // tap((next) => {
-            //     console.log(next)
-            //     this.store.set(AppStateProps.filteredTodos, next);
-            // })
-            );
+        return this.appStorage.getListForGivenDate$(val, orderBy);
     }
 
 
@@ -46,14 +49,22 @@ export class AppFirebaseCRUDService {
         todo.timestamp = new Date().getTime();
         todo.date = new Date().toDateString();
         todo.key = todo.timestamp.toString();
+        todo.isOnline = false;
         return this.appStorage.addTodo(todo);
     }
 
     updateTodo(item: Todo, key: string) {
+        item = { ...item, isOnline: false };
         return this.appStorage.updateTodo(item, key);
     }
 
     deleteTodo(key: string) {
         return this.appStorage.deleteTodo(key);
+    }
+
+    syncDataOnline() {
+        this.appStorage.getAllTodo().subscribe((item: any) => {
+
+        });
     }
 }

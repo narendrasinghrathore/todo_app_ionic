@@ -6,4 +6,5 @@ export interface Todo {
     key?: string;
     date?: string;
     exist?: () => boolean;
+    isOnline?: boolean;
 }

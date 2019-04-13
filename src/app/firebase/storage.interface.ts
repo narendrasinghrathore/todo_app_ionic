@@ -25,6 +25,6 @@ export interface IAppStorage {
      * Return Promise<any> | Observable<any> | any
      * @param key Todo key
      */
-    deleteTodo(key: string): Promise<any> | Observable<any> | any;
+    deleteTodo(key: string, item?: Todo): Promise<any> | Observable<any> | any;
 
 }

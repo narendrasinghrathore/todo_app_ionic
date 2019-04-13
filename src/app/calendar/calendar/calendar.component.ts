@@ -32,14 +32,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   todoListSusb: Subscription;
 
+  selectedDateFromWeek: CalendarWeek;
+
 
   constructor(private calendarService: CalendarService, private fire: AppFirebaseCRUDService,
     private store: Store, private shared: SharedService, private core: CoreService) { }
 
   ngOnInit() {
 
-    this.fire.offlineDatabaseEvent.subscribe(() => {
-      this.getTodosForSelectedDate(this.todayDate);
+    this.fire.offlineDatabaseEvent.subscribe((event) => {
+      this.getTodosForSelectedDate(this.selectedDateFromWeek);
     });
 
     this.todoList$ = this.store.select<Todo[]>(AppStateProps.filteredTodos);
@@ -69,12 +71,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   getTodosForSelectedDate(date: CalendarWeek) {
-    this.todoListSusb = of([])
-      .pipe(
-        switchMap(
-          () => this.fire.getListForGivenDate$(date.date.toDateString())
-        )
-      ).subscribe();
+    this.selectedDateFromWeek = date;
+    this.todoListSusb = this.fire.getListForGivenDate$(date.date.toDateString()).subscribe();
   }
 
 
