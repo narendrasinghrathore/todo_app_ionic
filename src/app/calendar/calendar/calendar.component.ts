@@ -34,6 +34,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   selectedDateFromWeek: CalendarWeek;
 
+  showDeleted = {
+    value: 'Show removed todo items',
+    isChecked: true
+  };
+
 
   constructor(private calendarService: CalendarService, private fire: AppFirebaseCRUDService,
     private store: Store, private shared: SharedService, private core: CoreService) { }
@@ -70,9 +75,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   }
 
+  showAll() {
+    this.showDeleted.isChecked = !this.showDeleted.isChecked;
+    this.getTodosForSelectedDate(this.selectedDateFromWeek);
+  }
+
   getTodosForSelectedDate(date: CalendarWeek) {
     this.selectedDateFromWeek = date;
-    this.todoListSusb = this.fire.getListForGivenDate$(date.date.toDateString()).subscribe();
+    this.todoListSusb = this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked).subscribe();
   }
 
 
@@ -111,11 +121,17 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
+  async restoreTodo(item: Todo) {
+    item.isDeleted = false;
+    await this.fire.updateTodo(item, item.key);
+    this.core.displayToast(`Todo restored`);
+  }
+
   async confirmDelete(item: Todo) {
     const modal = await this.shared.confirmDeleteDialog(item);
     const { data } = await modal.onDidDismiss();
     if (data) {
-      await this.fire.deleteTodo(item.key);
+      await this.fire.deleteTodo(item.key, item);
       this.core.displayToast(`Todo removed`);
     }
   }

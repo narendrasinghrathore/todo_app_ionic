@@ -23,23 +23,33 @@ export class AppOfflineStorageService implements IAppStorageOffline {
    */
   dbChanges: Subject<DatabaseEvent> = new Subject();
 
-  getListForGivenDate$(val: any, orderBy: string): Observable<Todo[]> | Observable<any> | any {
+  getListForGivenDate$(val: any, orderBy: string, showAll: boolean = true): Observable<Todo[]> | Observable<any> | any {
     return of(this.storage.keys())
       .pipe(
         mergeMap(d => d),
         switchMap((k) => of(k).pipe(mergeMap(async (keys) => {
           const arr: Todo[] = [];
           for (const key of keys) {
-            const item = await this.storage.get(key);
+            const item: Todo = await this.storage.get(key);
             if (item[orderBy] === val) {
-              arr.push(item);
+              if (item.isDeleted === false && item.isDeleted !== undefined && showAll === false) {
+                arr.push(item);
+              }
+              if (showAll) {
+                arr.push(item);
+              }
             }
           }
           return arr;
         }))),
         tap(
           arr => {
-            this.store.set(AppStateProps.filteredTodos, arr);
+            let tempArr = [];
+            if (arr) {
+              tempArr = [...arr];
+            }
+            this.store.set(AppStateProps.filteredTodos, tempArr);
+
           })
       );
   }

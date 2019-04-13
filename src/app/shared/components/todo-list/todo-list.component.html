@@ -15,9 +15,16 @@
       <ion-button fill="clear" (click)="openTodo(item)">
         <ion-icon slot="icon-only" name="open"></ion-icon>
       </ion-button>
-      <ion-button fill="clear" (click)="deleteTodo(item)">
-        <ion-icon name="trash"></ion-icon>
-      </ion-button>
+      <ng-container *ngIf="item?.isDeleted === true">
+          <ion-button fill="clear" (click)="restoreTodo(item)">
+              <ion-icon name="undo"></ion-icon>
+            </ion-button>
+      </ng-container>
+      <ng-container *ngIf="item?.isDeleted === false || item?.isDeleted === undefined">
+        <ion-button fill="clear" (click)="deleteTodo(item)">
+          <ion-icon name="trash"></ion-icon>
+        </ion-button>
+      </ng-container>
     </ion-buttons>
   </ion-card-content>
 </ion-card>

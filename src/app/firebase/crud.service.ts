@@ -38,8 +38,8 @@ export class AppFirebaseCRUDService {
         this.appStorage = this.appFactory.OfflineIndexDBStorage;
     }
 
-    getListForGivenDate$(val: any, orderBy: string = 'date'): Observable<Todo[]> {
-        return this.appStorage.getListForGivenDate$(val, orderBy);
+    getListForGivenDate$(val: any, orderBy: string = 'date', showAll: boolean = true): Observable<Todo[]> {
+        return this.appStorage.getListForGivenDate$(val, orderBy, showAll);
     }
 
 
@@ -49,17 +49,23 @@ export class AppFirebaseCRUDService {
         todo.timestamp = new Date().getTime();
         todo.date = new Date().toDateString();
         todo.key = todo.timestamp.toString();
-        todo.isOnline = false;
+        todo.isNew = true;
         return this.appStorage.addTodo(todo);
     }
 
     updateTodo(item: Todo, key: string) {
-        item = { ...item, isOnline: false };
+        item = { ...item, isUpdated: true };
         return this.appStorage.updateTodo(item, key);
     }
 
-    deleteTodo(key: string) {
-        return this.appStorage.deleteTodo(key);
+    /**
+     * Mark as delete to later sync with online server to remove it from there.
+     * @param key Todo item key
+     * @param item Todo item
+     */
+    deleteTodo(key: string, item?: Todo) {
+        item = {...item, isDeleted: true};
+        return this.appStorage.updateTodo(item, key);
     }
 
     syncDataOnline() {

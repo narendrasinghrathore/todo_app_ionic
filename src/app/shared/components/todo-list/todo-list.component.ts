@@ -18,11 +18,18 @@ export class TodoListComponent implements OnInit {
   open: EventEmitter<Todo> = new EventEmitter();
 
   @Output()
+  restore: EventEmitter<Todo> = new EventEmitter();
+
+  @Output()
   delete: EventEmitter<Todo> = new EventEmitter();
   constructor() { }
 
   openTodo(item: Todo) {
     this.open.emit(item);
+  }
+
+  restoreTodo(item: Todo) {
+    this.restore.emit(item);
   }
 
   deleteTodo(item: Todo) {
