@@ -1,5 +1,7 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
+<img src="https://user-images.githubusercontent.com/4208015/56080121-9e545b80-5e1a-11e9-8439-70cc3515bee0.gif"/>
+
 We have heavliy used lazy loading technique which in result for a android or 
 ios app will not be helpful as it's a package we will deliver.
 But will be helpful if same app is used as web app which definitely if a better approach
