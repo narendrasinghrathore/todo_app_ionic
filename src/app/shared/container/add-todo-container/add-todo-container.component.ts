@@ -27,7 +27,7 @@ export class AddTodoContainerComponent implements OnInit {
     const modal = await this.shared.addTodoDialog();
     const { data } = await modal.onDidDismiss();
     if (data) {
-      this.fire.addTodo(data);
+      this.fire.addTodo(data).subscribe();
     }
   }
 

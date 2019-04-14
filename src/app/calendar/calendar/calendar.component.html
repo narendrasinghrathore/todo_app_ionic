@@ -20,13 +20,22 @@
 </ion-header>
 <app-week [week]="week" (selectedDate)="getTodosForSelectedDate($event)" [defaultSelectedDate]="todayDate"></app-week>
 <ion-item>
-    <ion-label>{{showDeleted.value}}</ion-label>
-  <ion-checkbox slot="end" color="primary" [checked]="showDeleted.isChecked" (ionChange)="showAll()" ></ion-checkbox>
+  <ion-label>{{showDeleted.value}}</ion-label>
+  <ion-checkbox slot="end" color="primary" [checked]="showDeleted.isChecked" (ionChange)="showAll()"></ion-checkbox>
 </ion-item>
 <app-add-todo-container color="light"></app-add-todo-container>
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content 
+    pullingIcon="arrow-dropdown" 
+    pullingText="Pull to refresh" 
+    refreshingSpinner="crescent"
+    refreshingText="Syncing data...">
+    </ion-refresher-content>
+  </ion-refresher>
   <ng-container *ngIf="todoList$ | async as list else loading">
-    <app-todo-list [list]="list" (open)="openTodo($event)" (restore)="restoreTodo($event)" (delete)="confirmDelete($event)"></app-todo-list>
+    <app-todo-list [list]="list" (open)="openTodo($event)" (restore)="restoreTodo($event)"
+      (delete)="confirmDelete($event)"></app-todo-list>
   </ng-container>
   <ng-template #loading>
     <app-loading>

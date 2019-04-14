@@ -103,6 +103,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.todayDate = { ...this.week.filter(data => data.currentDate)[0] };
       this.selectedDate = this.todayDate.date;
     }
+
   }
 
   private setTodayDate() {
@@ -110,6 +111,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
     if (defaultDate.length > 0) {
       this.todayDate = { ...defaultDate[0] };
     }
+  }
+
+  async doRefresh(event) {
+    this.fire.syncDataOnline(() => {
+      event['target'].complete();
+    });
   }
 
   async openTodo(item: Todo) {
@@ -120,7 +127,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     const modal = await this.shared.addTodoDialog(item);
     const { data } = await modal.onDidDismiss();
     if (data) {
-      this.fire.updateTodo({ ...item, ...data }, item.key);
+      this.fire.updateTodo({ ...item, ...data }, item.key).subscribe();
       this.core.displayToast(`Changes saved`);
     }
   }

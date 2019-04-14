@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, from, of, empty } from 'rxjs';
 import { Todo } from '../models/todo.model';
-import { tap } from 'rxjs/operators';
+import { tap, map, mergeMap, takeUntil, take } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { AppFactoryService } from './factory.service';
 import { AppOfflineStorageService } from './offline-storage.service';
@@ -23,14 +23,6 @@ export class AppFirebaseCRUDService {
         private appFactory: AppFactoryService, appFirebase: AppFirebaseService,
         private coreService: CoreService) {
         this.setStorageInstance();
-
-        appFirebase.appStatus$.subscribe(appOnline => {
-            if (appOnline) {
-                this.syncDataOnline();
-            }
-        });
-
-
     }
 
     /**
@@ -97,41 +89,84 @@ export class AppFirebaseCRUDService {
         return this.appStorage.updateTodo(item, key);
     }
 
-    syncDataOnline() {
-        this.appStorage.getAllTodo().subscribe((items: Todo[]) => {
-            const deleteItems = items.filter(v => v.isDeleted ? (v.isDeleted === true ? v : null) : null);
-            const updateItems = items.filter(v => v.isUpdated ? (v.isUpdated === true ? v : null) : null);
-            const addItems = items.filter(v => v.isNew ? (v.isNew === true ? v : null) : null);
+    syncDataOnline(callback) {
+        this.appStorage.getAllTodo().pipe(
+            map((items: Todo[]) => {
+                let deleteItems = items.filter(v => v.isDeleted ? (v.isDeleted === true ? v : null) : null);
+                const updateItems = items.filter(v => v.isUpdated ? (v.isUpdated === true ? v : null) : null);
+                const addItems = items.filter(v => v.isNew ? (v.isNew === true ? v : null) : null);
 
-            const onlineInstance = this.appFactory.OnlineFirebaseInstance;
+                const onlineInstance = this.appFactory.OnlineFirebaseInstance;
 
-            // Sync new created items to online
-            for (const newItem of addItems) {
-                onlineInstance.addTodo(newItem).subscribe(d => {
-                    delete newItem.isNew;
-                    // remove isNew and update to local storage
-                    const item = { ...newItem };
-                    this.appStorage.updateTodo(item, item.key);
+                // Sync new item to online
+                const addItems$ = addItems.map(item => {
+                    // remove isNew and update online and to local storage
+                    delete item.isNew;
+                    item = { ...item };
+                    console.log('add sync called');
+                    return onlineInstance.addTodo(item).pipe(
+                        tap(() => {
+                            this.appStorage.updateTodo(item, item.key).subscribe();
+                        }),
+                        take(1));
                 });
-            }
 
-            // Sync updated item to online
-            for (const updateItem of updateItems) {
-                onlineInstance.updateTodo(updateItem, updateItem.key).subscribe(d => {
-                    delete updateItem.isUpdated;
+                const syncNewItemsObs =
+                    addItems$.length > 0 ? from(addItems$).pipe(tap(a => a.subscribe())) : empty();
+
+                // Sync updated item to online
+                const updateItems$ = updateItems.map(item => {
+                    delete item.isUpdated;
                     // remvove isUpdated property and update to local storage
-                    const item = { ...updateItem };
-                    this.appStorage.updateTodo(item, item.key);
+                    item = { ...item };
+                    console.log('update sync called');
+                    return onlineInstance.updateTodo(item, item.key)
+                        .pipe(
+                            tap(() => {
+                                this.appStorage.updateTodo(item, item.key).subscribe();
+                            }),
+                            take(1));
                 });
-            }
 
-            // Sync deleted item to online
-            for (const deletedItem of deleteItems) {
-                onlineInstance.deleteTodo(deletedItem.key).subscribe(d => {
-                    // remove from local storage
-                    this.appStorage.deleteTodo(deletedItem.key);
+                const syncUpdatedItemsObs =
+                    updateItems$.length > 0 ? from(updateItems$).pipe(tap(a => a.subscribe())) : empty();
+
+                // Sync deleted item to online
+
+                const fileteredDeletedItem = deleteItems.filter(item => {
+                    // if new item is added locally and without sync
+                    // deleted locally then remove from local storage
+                    // on sync without making a extra api call to server
+                    // as record doesn't exist online
+                    if (item.isDeleted === true && item.isNew !== undefined) {
+                        this.appStorage.deleteTodo(item.key).subscribe();
+                    }
+                    return item.isDeleted === true && item.isNew === undefined;
                 });
-            }
-        });
+
+                deleteItems = [...fileteredDeletedItem];
+
+
+                const deleteItems$ = deleteItems.map(item => onlineInstance.deleteTodo(item.key)
+                    .pipe(
+                        tap(() => {
+                            console.log('online delete sync called ');
+                            this.appStorage.deleteTodo(item.key).subscribe();
+                        }),
+                        take(1)
+                    ));
+
+                const syncDeletedItemsObs = deleteItems$.length > 0 ? from(deleteItems$).pipe(tap((a) => a.subscribe())) : empty();
+
+
+                return of(syncNewItemsObs, syncUpdatedItemsObs, syncDeletedItemsObs);
+
+            }),
+            take(1)
+        ).subscribe(done => {
+            done.subscribe((inner) => inner.subscribe());
+        },
+        err => console.log(err),
+        () => callback());
     }
 }

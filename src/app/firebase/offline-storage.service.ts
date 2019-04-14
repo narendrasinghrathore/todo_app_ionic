@@ -54,17 +54,17 @@ export class AppOfflineStorageService implements IAppStorageOffline {
       );
   }
 
-  updateTodo(item: Todo, key: string): Observable<any> | Promise<void> {
+  updateTodo(item: Todo, key: string): Observable<any> | Promise<void> | any {
     this.dbChanges.next(DatabaseEvent.Update);
-    return from(this.storage.set(key, item));
+    return from(this.storage.set(key, item)).pipe(take(1));
   }
 
   deleteTodo(key: string): Observable<any> | Promise<void> | any {
-    from(this.storage.remove(key))
+    return from(this.storage.remove(key))
       .pipe(
         tap(() => this.dbChanges.next(DatabaseEvent.Delete)),
         take(1)
-      ).subscribe();
+      );
   }
 
   constructor(private storage: Storage, private store: Store) { }
@@ -74,14 +74,11 @@ export class AppOfflineStorageService implements IAppStorageOffline {
    * @param item : Todo
    */
   addTodo(item: Todo): Observable<any> | Promise<any> | any {
-    from(this.storage.set(JSON.stringify(item.timestamp), item))
+    return from(this.storage.set(JSON.stringify(item.timestamp), item))
       .pipe(
-        map(a => a),
         tap(() => this.dbChanges.next(DatabaseEvent.Add)),
         take(1)
-      )
-      .subscribe();
-    return true;
+      );
   }
 
   /**
