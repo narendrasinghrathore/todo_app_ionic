@@ -35,9 +35,11 @@ export class AppOnlineStorageService implements IAppStorageOnline {
             .pipe(map(changes => changes.map(
                 c => ({ key: c.payload.key, ...c.payload.val() })
             ))
-                , tap((next) => {
-                    this.store.set(AppStateProps.filteredTodos, next);
-                }));
+                ,
+                // tap((next) => {
+                //     this.store.set(AppStateProps.filteredTodos, next);
+                // }),
+                take(1));
     }
 
 

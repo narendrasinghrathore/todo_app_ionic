@@ -30,8 +30,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   todoList$: Observable<Todo[]>;
 
-  todoListSusb: Subscription;
-
   selectedDateFromWeek: CalendarWeek;
 
   showDeleted = {
@@ -82,7 +80,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getTodosForSelectedDate(date: CalendarWeek) {
     this.selectedDateFromWeek = date;
-    this.todoListSusb = this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked).subscribe();
+    this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked);
   }
 
 
@@ -134,6 +132,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   async restoreTodo(item: Todo) {
     await this.fire.restoreTodoDeleted(item);
+    this.getTodosForSelectedDate(this.selectedDateFromWeek);
     this.core.displayToast(`Todo restored`);
   }
 

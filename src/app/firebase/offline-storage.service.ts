@@ -50,7 +50,8 @@ export class AppOfflineStorageService implements IAppStorageOffline {
             }
             this.store.set(AppStateProps.filteredTodos, tempArr);
 
-          })
+          }),
+          take(1)
       );
   }
 

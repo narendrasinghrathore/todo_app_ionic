@@ -32,8 +32,15 @@ export class AppFirebaseCRUDService {
         this.appStorage = this.appFactory.OfflineIndexDBStorage;
     }
 
-    getListForGivenDate$(val: any, orderBy: string = 'date', showAll: boolean = true): Observable<Todo[]> {
-        return this.appStorage.getListForGivenDate$(val, orderBy, showAll);
+    getListForGivenDate$(val: any, orderBy: string = 'date', showAll: boolean = true): void {
+        const onlineDBInstance = this.appFactory.OnlineFirebaseInstance;
+        onlineDBInstance.getListForGivenDate$(val, orderBy).subscribe(items => {
+            // retrieve all online todo items and store locally
+            const items$ = items.map(item => this.appStorage.addTodo(item));
+            from(items$).subscribe(d => { }, err => console.log(err), () => {
+                this.appStorage.getListForGivenDate$(val, orderBy, showAll).subscribe();
+            });
+        });
     }
 
 
@@ -119,7 +126,6 @@ export class AppFirebaseCRUDService {
                     delete item.isUpdated;
                     // remvove isUpdated property and update to local storage
                     item = { ...item };
-                    console.log('update sync called');
                     return onlineInstance.updateTodo(item, item.key)
                         .pipe(
                             tap(() => {
@@ -166,7 +172,7 @@ export class AppFirebaseCRUDService {
         ).subscribe(done => {
             done.subscribe((inner) => inner.subscribe());
         },
-        err => console.log(err),
-        () => callback());
+            err => console.log(err),
+            () => { this.coreService.displayToast(`Sync completed`); callback(); });
     }
 }
