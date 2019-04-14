@@ -5,7 +5,6 @@ import { Observable, from, Subject, of } from 'rxjs';
 import { IAppStorageOffline } from './storageOffline.interface';
 import { Store, AppStateProps } from 'store';
 import { tap, switchMap, mergeMap, map, take } from 'rxjs/operators';
-import { AppOnlineStorageService } from './online-storage.service';
 
 export enum DatabaseEvent {
   Add = 0,
@@ -32,10 +31,11 @@ export class AppOfflineStorageService implements IAppStorageOffline {
           for (const key of keys) {
             const item: Todo = await this.storage.get(key);
             if (item[orderBy] === val) {
-              if (item.isDeleted === false && item.isDeleted !== undefined && showAll === false) {
-                arr.push(item);
-              }
-              if (showAll) {
+              if (showAll === false) {
+                if (item.isDeleted === undefined) {
+                  arr.push(item);
+                }
+              } else {
                 arr.push(item);
               }
             }
@@ -60,7 +60,7 @@ export class AppOfflineStorageService implements IAppStorageOffline {
   }
 
   deleteTodo(key: string): Observable<any> | Promise<void> | any {
-    return from(this.storage.remove(key))
+    from(this.storage.remove(key))
       .pipe(
         tap(() => this.dbChanges.next(DatabaseEvent.Delete)),
         take(1)
@@ -74,7 +74,7 @@ export class AppOfflineStorageService implements IAppStorageOffline {
    * @param item : Todo
    */
   addTodo(item: Todo): Observable<any> | Promise<any> | any {
-    const subs = from(this.storage.set(JSON.stringify(item.timestamp), item))
+    from(this.storage.set(JSON.stringify(item.timestamp), item))
       .pipe(
         map(a => a),
         tap(() => this.dbChanges.next(DatabaseEvent.Add)),
@@ -87,7 +87,7 @@ export class AppOfflineStorageService implements IAppStorageOffline {
   /**
    * Get all todo items from IndexDB
    */
-  getAllTodo(): Observable<any> {
+  getAllTodo(): Observable<Todo[]> {
     return of([]).pipe(
       switchMap(() => from(this.storage.keys())
         .pipe(mergeMap(async (val) => {

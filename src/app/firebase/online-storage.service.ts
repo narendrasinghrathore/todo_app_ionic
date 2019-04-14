@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { Todo } from '../models/todo.model';
 import { AppFirebaseService } from './firebase.service';
-import { map, tap } from 'rxjs/operators';
+import { map, tap, mergeMap, take } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { IAppStorageOnline } from './storageOnline.interface';
 
@@ -42,15 +42,24 @@ export class AppOnlineStorageService implements IAppStorageOnline {
 
 
 
+    /**
+     * Return Observable using from operator to resolve promise and mergeMap
+     * to flatten the inner promise and take will automatically
+     * unsubscribe after getting the first value
+     * @param item Todo
+     */
     addTodo(item: Todo) {
-        return this.dbRef.child(`${item.timestamp.toString()}`).set(item);
+        return from(this.dbRef.child(`${item.timestamp.toString()}`).set(item))
+            .pipe(take(1));
     }
 
     updateTodo(item: Todo, key: string) {
-        return this.dbRef.child(key).update(item);
+        return from(this.dbRef.child(key).update(item))
+            .pipe(take(1));
     }
 
     deleteTodo(key: string) {
-        return this.dbRef.child(key).remove();
+        return from(this.dbRef.child(key).remove())
+            .pipe(take(1));
     }
 }

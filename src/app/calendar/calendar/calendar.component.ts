@@ -36,7 +36,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   showDeleted = {
     value: 'Show removed todo items',
-    isChecked: true
+    isChecked: false
   };
 
 
@@ -113,6 +113,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   async openTodo(item: Todo) {
+    if (item.isDeleted) {
+      this.core.displayToast(`Item deleted, restore first to make changes`);
+      return;
+    }
     const modal = await this.shared.addTodoDialog(item);
     const { data } = await modal.onDidDismiss();
     if (data) {
@@ -122,8 +126,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   async restoreTodo(item: Todo) {
-    item.isDeleted = false;
-    await this.fire.updateTodo(item, item.key);
+    await this.fire.restoreTodoDeleted(item);
     this.core.displayToast(`Todo restored`);
   }
 
