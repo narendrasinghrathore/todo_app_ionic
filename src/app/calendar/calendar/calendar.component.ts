@@ -4,7 +4,7 @@ import { Subscription, Observable } from 'rxjs';
 import { Todo } from '../../models/todo.model';
 import { AppFirebaseCRUDService } from '../../firebase/crud.service';
 import { Store, AppStateProps } from 'store';
-import { switchMap, } from 'rxjs/operators';
+import { switchMap, take, } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { CoreService } from '../../core/core.service';
@@ -80,7 +80,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getTodosForSelectedDate(date: CalendarWeek) {
     this.selectedDateFromWeek = date;
-    this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked);
+    this.getDataForSelectedDate(() => { }, this.selectedDateFromWeek);
   }
 
 
@@ -111,10 +111,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
+  getDataForSelectedDate(callback: Function, date?: CalendarWeek) {
+    this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked)
+      .subscribe(() => {
+        this.fire.syncDataOnline(() => {
+          callback();
+        });
+      });
+  }
+
   async doRefresh(event) {
-    this.fire.syncDataOnline(() => {
+    this.getDataForSelectedDate(() => {
       event['target'].complete();
-    });
+    }, this.selectedDateFromWeek);
   }
 
   async openTodo(item: Todo) {

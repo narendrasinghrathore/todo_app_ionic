@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database';
-import { Observable, from } from 'rxjs';
+import { Observable, from, empty } from 'rxjs';
 import { Todo } from '../models/todo.model';
 import { AppFirebaseService } from './firebase.service';
-import { map, tap, mergeMap, take } from 'rxjs/operators';
+import { map, tap, mergeMap, take, catchError } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { IAppStorageOnline } from './storageOnline.interface';
 
@@ -32,13 +32,10 @@ export class AppOnlineStorageService implements IAppStorageOnline {
     getListForGivenDate$(val: any, orderBy: string = 'date'): Observable<Todo[]> {
         return this.fireDB.list(this.url,
             (a) => a.orderByChild(orderBy).startAt(val).endAt(val)).snapshotChanges()
-            .pipe(map(changes => changes.map(
-                c => ({ key: c.payload.key, ...c.payload.val() })
-            ))
-                ,
-                // tap((next) => {
-                //     this.store.set(AppStateProps.filteredTodos, next);
-                // }),
+            .pipe(
+                map(changes => changes.map(
+                    c => ({ key: c.payload.key, ...c.payload.val() })
+                )),
                 take(1));
     }
 
