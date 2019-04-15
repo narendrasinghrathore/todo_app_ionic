@@ -1,17 +1,21 @@
 <ion-card>
   <ion-card-header>
-    <ion-card-subtitle color="medium">{{todoItem?.timestamp | date}}</ion-card-subtitle>
+    <ion-card-subtitle color="tertiary">{{todoItem?.timestamp | date}}</ion-card-subtitle>
     <ion-card-title color="light">{{todoItem?.title}}</ion-card-title>
   </ion-card-header>
 
   <ion-card-content>
-    <ion-buttons>
-      <ion-fab-button margin fill="clear"  (click)="closePopUp()" color="medium">
-        <ion-icon name="close"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button margin fill="clear" color="danger" (click)="confirmDelete()">
-        <ion-icon name="checkmark"></ion-icon>
-      </ion-fab-button>
-    </ion-buttons>
+    <p>
+        {{todoItem.desc}}
+    </p>
+   
   </ion-card-content>
 </ion-card>
+<ion-buttons>
+  <ion-fab-button margin fill="clear"  (click)="closePopUp()" color="secondary">
+    <ion-icon name="close"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-button margin fill="clear" color="danger" (click)="confirmDelete()">
+    <ion-icon name="checkmark"></ion-icon>
+  </ion-fab-button>
+</ion-buttons>
