@@ -80,7 +80,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   getTodosForSelectedDate(date: CalendarWeek) {
     this.selectedDateFromWeek = date;
-    this.getDataForSelectedDate(() => { }, this.selectedDateFromWeek);
+    this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked)
+      .subscribe();
   }
 
 
@@ -111,19 +112,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDataForSelectedDate(callback: Function, date?: CalendarWeek) {
-    this.fire.getListForGivenDate$(date.date.toDateString(), 'date', this.showDeleted.isChecked)
-      .subscribe(() => {
-        this.fire.syncDataOnline(() => {
-          callback();
-        });
-      });
-  }
-
   async doRefresh(event) {
-    this.getDataForSelectedDate(() => {
-      event['target'].complete();
-    }, this.selectedDateFromWeek);
+    this.fire.syncDataOnline(() => {
+      this.fire.getListFromOnline(this.selectedDateFromWeek.date.toDateString(), 'date')
+        .subscribe((a) => {
+        }, err => { }, () => {
+          console.log('Completed', new Date());
+          setTimeout(() => {
+            this.getTodosForSelectedDate(this.selectedDateFromWeek);
+            event['target'].complete();
+          });
+        });
+    });
   }
 
   async openTodo(item: Todo) {

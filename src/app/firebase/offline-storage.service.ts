@@ -5,6 +5,7 @@ import { Observable, from, Subject, of } from 'rxjs';
 import { IAppStorageOffline } from './storageOffline.interface';
 import { Store, AppStateProps } from 'store';
 import { tap, switchMap, mergeMap, map, take } from 'rxjs/operators';
+import { pipe } from '@angular/core/src/render3';
 
 export enum DatabaseEvent {
   Add = 0,
@@ -48,10 +49,11 @@ export class AppOfflineStorageService implements IAppStorageOffline {
             if (arr) {
               tempArr = [...arr];
             }
+            console.log('Was called offline', new Date(), tempArr);
             this.store.set(AppStateProps.filteredTodos, tempArr);
 
           }),
-          take(1)
+        take(1)
       );
   }
 
@@ -110,8 +112,12 @@ export class AppOfflineStorageService implements IAppStorageOffline {
    * Clear all items from IndexDB
    */
   clearTodoItems(): Observable<any> {
-    this.dbChanges.next(DatabaseEvent.Clear);
-    return from(this.storage.clear());
+    return from(this.storage.clear()).pipe(
+      tap(() => {
+       console.log('Cleared' , new Date());
+      }),
+      take(1),
+    );
   }
 
 }

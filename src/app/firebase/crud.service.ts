@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, of, empty } from 'rxjs';
 import { Todo } from '../models/todo.model';
-import { tap, map, mergeMap, takeUntil, take, catchError } from 'rxjs/operators';
+import { tap, map, take } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { AppFactoryService } from './factory.service';
 import { AppOfflineStorageService } from './offline-storage.service';
@@ -20,8 +20,7 @@ export class AppFirebaseCRUDService {
 
     constructor(private appStorage: AppOfflineStorageService,
         private store: Store,
-        private appFactory: AppFactoryService, private appFirebase: AppFirebaseService,
-        private coreService: CoreService) {
+        private appFactory: AppFactoryService, private appFirebase: AppFirebaseService) {
         this.setStorageInstance();
     }
 
@@ -33,26 +32,21 @@ export class AppFirebaseCRUDService {
     }
 
     getListForGivenDate$(val: any, orderBy: string = 'date', showAll: boolean = true): Observable<any> {
-        if (this.appFirebase.appStatus$.value) {
-            return this.getListFromOnline(val, orderBy).pipe(
-                tap(() => this.appStorage.getListForGivenDate$(val, orderBy, showAll).subscribe())
-            );
-        } else {
-
-            return this.appStorage.getListForGivenDate$(val, orderBy, showAll);
-        }
+        return this.appStorage.getListForGivenDate$(val, orderBy, showAll);
     }
 
 
 
-    private getListFromOnline(val: any, orderBy: string): Observable<Todo[]> {
-        const onlineDBInstance = this.appFactory.OnlineFirebaseInstance;
-        return onlineDBInstance.getListForGivenDate$(val, orderBy)
+    getListFromOnline(val: any, orderBy: string): Observable<Todo[]> {
+        if (this.appFirebase.appStatus$.value === false) {
+            return of([]);
+        }
+        return this.appFactory.OnlineFirebaseInstance.getListForGivenDate$(val, orderBy)
             .pipe(map(items => items), tap(items => {
                 // retrieve all online todo items and store locally
                 const items$ = items.map(item => this.appStorage.addTodo(item));
                 from(items$).subscribe();
-            }));
+            }), take(1));
     }
 
     addTodo(item: Todo) {
@@ -120,7 +114,6 @@ export class AppFirebaseCRUDService {
                     // remove isNew and update online and to local storage
                     delete item.isNew;
                     item = { ...item };
-                    console.log('add sync called');
                     return onlineInstance.addTodo(item).pipe(
                         tap(() => {
                             this.appStorage.updateTodo(item, item.key).subscribe();
@@ -183,6 +176,12 @@ export class AppFirebaseCRUDService {
             done.subscribe((inner) => inner.subscribe());
         },
             err => console.log(err),
-            () => { callback(); });
+            () => {
+                if (this.appFirebase.appStatus$.value === true) {
+                    this.appStorage.clearTodoItems().subscribe(() => { callback(); });
+                } else {
+                    callback();
+                }
+            });
     }
 }
