@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, from, of, empty } from 'rxjs';
 import { Todo } from '../models/todo.model';
-import { tap, map, take } from 'rxjs/operators';
+import { tap, map, take, mergeMap } from 'rxjs/operators';
 import { Store, AppStateProps } from 'store';
 import { AppFactoryService } from './factory.service';
 import { AppOfflineStorageService } from './offline-storage.service';
@@ -100,7 +100,7 @@ export class AppFirebaseCRUDService {
         return this.appStorage.updateTodo(item, key);
     }
 
-    syncDataOnline(callback) {
+    syncDataOnline(callback: Function, selectedDate?: Date) {
         this.appStorage.getAllTodo().pipe(
             map((items: Todo[]) => {
                 let deleteItems = items.filter(v => v.isDeleted ? (v.isDeleted === true ? v : null) : null);
@@ -178,7 +178,21 @@ export class AppFirebaseCRUDService {
             err => console.log(err),
             () => {
                 if (this.appFirebase.appStatus$.value === true) {
-                    this.appStorage.clearTodoItems().subscribe(() => { callback(); });
+                    this.appStorage.getAllTodo()
+                        .pipe(
+                            map(items => items.filter(item => item.date === selectedDate.toDateString())),
+                            map(items => from(items).pipe(
+                                map(item => this.appStorage.deleteTodo(item.key))
+                            ))
+                        )
+                        .subscribe((a) => {
+                            a.subscribe(ap => {
+
+                            }, ar => { }, () => {
+                                callback();
+                            });
+                        });
+                    // this.appStorage.clearTodoItems().subscribe(() => { callback(); });
                 } else {
                     callback();
                 }

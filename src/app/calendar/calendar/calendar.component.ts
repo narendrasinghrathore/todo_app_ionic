@@ -123,7 +123,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             event['target'].complete();
           });
         });
-    });
+    }, this.selectedDateFromWeek.date);
   }
 
   async openTodo(item: Todo) {
