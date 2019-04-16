@@ -9,3 +9,12 @@ ion-segment-button {
   --color: #3fad72;
   --background: #7ccd69;
 }
+
+ion-toolbar {
+  --color: #303030;
+  --background: #7ccd69;
+
+  .title {
+    font-weight: 700;
+  }
+}
