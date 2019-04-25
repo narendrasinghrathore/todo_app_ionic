@@ -1,6 +1,6 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
-<img width="720" height="1448" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/gif.gif" />
+<img width="300" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/gif.gif" />
 
 demo  here: https://gifs.com/gif/yo9GZP
 
