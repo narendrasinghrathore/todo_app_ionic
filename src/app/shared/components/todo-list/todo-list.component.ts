@@ -38,4 +38,8 @@ export class TodoListComponent implements OnInit {
 
   ngOnInit() { }
 
+  isOffline(item: Todo) {
+    return item.isNew || item.isUpdated || item.isDeleted ? true : false;
+  }
+
 }

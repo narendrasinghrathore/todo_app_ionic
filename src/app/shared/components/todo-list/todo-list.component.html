@@ -2,7 +2,15 @@
   <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
   <ion-card-header>
 
-    <ion-card-title (click)="openTodo(item)">{{item.title}}
+    <ion-card-title (click)="openTodo(item)">
+      <ng-container *ngIf="isOffline(item); else itemoffline">
+        <ion-icon name="cloud-upload"></ion-icon>
+      </ng-container>
+      <ng-template #itemoffline>
+        <ion-icon name="cloud-done"></ion-icon>
+      </ng-template>
+      {{item.title}}
+
     </ion-card-title>
     <ion-card-subtitle>
       <ion-icon name="clock"></ion-icon>
@@ -16,9 +24,9 @@
         <ion-icon slot="icon-only" name="open"></ion-icon>
       </ion-button>
       <ng-container *ngIf="item?.isDeleted === true">
-          <ion-button fill="clear" (click)="restoreTodo(item)">
-              <ion-icon name="undo"></ion-icon>
-            </ion-button>
+        <ion-button fill="clear" (click)="restoreTodo(item)">
+          <ion-icon name="undo"></ion-icon>
+        </ion-button>
       </ng-container>
       <ng-container *ngIf="item?.isDeleted === false || item?.isDeleted === undefined">
         <ion-button fill="clear" (click)="deleteTodo(item)">

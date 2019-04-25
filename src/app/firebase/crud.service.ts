@@ -50,7 +50,6 @@ export class AppFirebaseCRUDService {
     }
 
     addTodo(item: Todo) {
-        console.log(item);
         const todo = { ...item };
         if (!item.timestamp) {
             todo.timestamp = new Date().getTime();
