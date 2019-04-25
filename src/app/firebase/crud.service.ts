@@ -50,9 +50,12 @@ export class AppFirebaseCRUDService {
     }
 
     addTodo(item: Todo) {
+        console.log(item);
         const todo = { ...item };
-        todo.timestamp = new Date().getTime();
-        todo.date = new Date().toDateString();
+        if (!item.timestamp) {
+            todo.timestamp = new Date().getTime();
+        }
+        todo.date = new Date(todo.timestamp).toDateString();
         todo.key = todo.timestamp.toString();
         todo.isNew = true;
         return this.appStorage.addTodo(todo);

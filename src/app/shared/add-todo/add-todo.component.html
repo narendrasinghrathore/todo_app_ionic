@@ -21,6 +21,15 @@
           <ion-textarea cols="4" clearInput formControlName="desc" placeholder="Add some description to your todo.">
           </ion-textarea>
         </ion-item>
+        <ion-item>
+          <ion-label>
+            <ion-icon name="calendar"></ion-icon>
+          </ion-label>
+          <ion-datetime [disabled]="disableDate" [min]="minDate" [value]="selectedDate.value.toISOString()" placeholder="Select date" display-format="MMM DD, YYYY"
+          picker-format="MMM DD, YYYY" (ionChange)="updateDate($event)"></ion-datetime>
+        </ion-item>
+        
+          
       </ion-card-content>
 
       <ion-button expand="block" type="submit" [disabled]="todoForm?.invalid">
