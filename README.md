@@ -1,10 +1,7 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
 
-<video width="720" height="1488" controls>
-  <source src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/todov1.1.3%5B1%5D.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+<iframe src='//gifs.com/embed/todo-application-ionic-yo9GZP' frameborder='0' scrolling='no' width='720px' height='1488px' style='-webkit-backface-visibility: hidden;-webkit-transform: scale(1);' ></iframe>
 
 
 <img width="300" height="600" src="https://user-images.githubusercontent.com/4208015/56080121-9e545b80-5e1a-11e9-8439-70cc3515bee0.gif"/>
