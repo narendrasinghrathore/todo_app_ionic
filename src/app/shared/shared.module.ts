@@ -26,12 +26,11 @@ import { AddTodoDirective } from './directives/add-todo.directive';
     AddTodoContainerComponent,
     AddTodoComponent,
     DeleteTodoComponent,
-    ColorSelectionComponent,
     ColorSelectionComponent],
   exports: [AddTodoComponent, DeleteTodoComponent,
     LoadingComponent, TodoListPipe, HeaderComponent,
     AddTodoContainerComponent, TodoListComponent,
-    AddTodoDirective]
+    AddTodoDirective, ColorSelectionComponent]
 })
 export class SharedModule {
   static forRoot(): ModuleWithProviders {

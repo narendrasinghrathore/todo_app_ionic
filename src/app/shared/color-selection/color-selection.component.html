@@ -1,6 +1,9 @@
 <div class="colors">
-  <ion-button color="primary">Primary</ion-button>
-  <ion-item *ngFor="let color of colors" [color]="color">
-    <ion-button [color]="color">sdfds</ion-button>
-  </ion-item>
+
+  <ng-container *ngFor="let color of colors;">
+    <ion-button fill="outline" shape="round" (click)="changeTheme(color.name)" [color]="dark">
+        <ion-icon *ngIf="selectedTheme === color.name" name="checkmark"></ion-icon>
+      {{color?.name}}
+    </ion-button>
+  </ng-container>
 </div>
