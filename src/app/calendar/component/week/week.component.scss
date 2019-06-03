@@ -1,8 +1,8 @@
 ion-segment-button {
-  --color-checked: var(--ion-color-primary); // black;
-  --background-checked: var(--ion-color-dark); // #7ccd69;
-  --background-activated: var(--ion-color-light); // #7ccd69;
-  --color-activated: var(--ion-color-light); //black;
+  --color-checked: black;
+  --background-checked: var(--ion-color-medium); // #7ccd69;
+  --background-activated: #7ccd69;
+  --color-activated: var(--ion-color-primary); //black;
 }
 
 ion-segment-button {
