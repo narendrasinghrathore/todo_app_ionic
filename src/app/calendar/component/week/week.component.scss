@@ -1,18 +1,18 @@
 ion-segment-button {
-  --color-checked: black;
-  --background-checked: #7ccd69;
-  --background-activated: #7ccd69;
-  --color-activated: black;
+  --color-checked:var(--ion-color-light);// black;
+  --background-checked: var(--ion-color-primary);// #7ccd69;
+  --background-activated:var(--ion-color-primary);// #7ccd69;
+  --color-activated:var(--ion-color-light);// black;
 }
 
 ion-segment-button {
-  --color: #3fad72;
-  --background: #7ccd69;
+  // --color: #3fad72;
+  // --background: #7ccd69;
 }
 
 ion-toolbar {
   --color: #303030;
-  --background: #7ccd69;
+  // --background: #7ccd69;
 
   .title {
     font-weight: 700;

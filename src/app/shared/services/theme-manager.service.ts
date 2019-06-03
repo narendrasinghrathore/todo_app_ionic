@@ -2,14 +2,17 @@ import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import * as Color from 'color';
 import { Storage } from '@ionic/storage';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { ITheme } from '../../../app/models/Theme';
+import { take, tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ThemeManagerService {
-  themes_ = [
+  themes_: ITheme[] = [
     {
-      name: '1', style: {
+      name: 'Light Yellow', id: 1, style: {
         primary: 'rgba(229, 224, 89, 1)',
         secondary: 'rgba(189, 211, 88, 1)',
         light: 'rgba(255, 255, 255, 1)',
@@ -18,7 +21,7 @@ export class ThemeManagerService {
       },
     },
     {
-      name: '2', style: {
+      name: 'Oyster Pink', id: 2, style: {
         primary: 'rgba(206, 190, 190, 1)',
         secondary: 'rgba(236, 226, 208, 1)',
         light: 'rgba(213, 185, 178, 1)',
@@ -27,7 +30,7 @@ export class ThemeManagerService {
       },
     },
     {
-      name: '3', style: {
+      name: 'Dark Green', id: 3, style: {
         primary: 'rgba(7, 59, 58, 1)',
         secondary: 'rgba(7, 59, 58, 1)',
         light: 'rgba(8, 160, 69, 1)',
@@ -36,7 +39,7 @@ export class ThemeManagerService {
       },
     },
     {
-      name: '4', style: {
+      name: 'Cream Horizon', id: 4, style: {
         primary: 'rgba(98, 131, 149, 1)',
         secondary: 'rgba(150, 137, 123, 1)',
         light: 'rgba(223, 213, 165, 1)',
@@ -45,7 +48,7 @@ export class ThemeManagerService {
       },
     },
     {
-      name: '5', style: {
+      name: 'Santas Grey', id: 5, style: {
         primary: '#000000',
         secondary: 'rgba(102, 102, 110, 1)',
         light: 'rgba(153, 153, 161, 1)',
@@ -55,16 +58,33 @@ export class ThemeManagerService {
     }
   ];
 
-  currentTheme = '1';
+
+
+  /**
+   * Emit name of selected theme or selected one
+   */
+  currentTheme: BehaviorSubject<ITheme> = new BehaviorSubject(null);
 
   constructor(
     @Inject(DOCUMENT) private document: Document,
     private storage: Storage
   ) {
-    storage.get('theme').then((theme: { name: string, css: string }) => {
-      this.setGlobalCSS(theme.css);
-      this.currentTheme = theme.name;
-    });
+
+  }
+
+  /**
+   * Will return previously applied theme as on Observable and unsubscribe on
+   * it's own.
+   */
+  getDefaultTheme(): Observable<ITheme> {
+    return from(this.storage.get('theme'))
+      .pipe(
+        take(1),
+        tap((theme: ITheme) => {
+          this.setGlobalCSS(CSSTextGenerator(theme.style));
+          this.currentTheme.next(theme);
+        })
+      );
   }
 
   /**
@@ -75,13 +95,12 @@ export class ThemeManagerService {
   }
 
   // Override all global variables with a new theme
-  setTheme(name): string {
-    const theme = this.themes.filter(a => a.name === name)[0];
+  setTheme(id): void {
+    const theme: ITheme = this.themes.filter(a => a.id === id)[0];
     const cssText = CSSTextGenerator(theme.style);
     this.setGlobalCSS(cssText);
-    this.currentTheme = theme.name;
-    this.storage.set(`theme`, { name: theme.name, css: cssText });
-    return this.currentTheme;
+    this.currentTheme.next(theme);
+    this.storage.set(`theme`, theme);
   }
 
   // Define a single CSS variable
@@ -197,3 +216,4 @@ function contrast(color, ratio = 0.8) {
   color = Color(color);
   return color.isDark() ? color.lighten(ratio) : color.darken(ratio);
 }
+
