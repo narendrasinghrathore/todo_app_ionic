@@ -1,13 +1,13 @@
 ion-segment-button {
-  --color-checked:var(--ion-color-light);// black;
-  --background-checked: var(--ion-color-primary);// #7ccd69;
-  --background-activated:var(--ion-color-primary);// #7ccd69;
-  --color-activated:var(--ion-color-light);// black;
+  --color-checked: var(--ion-color-primary); // black;
+  --background-checked: var(--ion-color-dark); // #7ccd69;
+  --background-activated: var(--ion-color-light); // #7ccd69;
+  --color-activated: var(--ion-color-light); //black;
 }
 
 ion-segment-button {
-  // --color: #3fad72;
-  // --background: #7ccd69;
+  --color: var(--ion-color-dark);
+  --background: var(--ion-color-light);
 }
 
 ion-toolbar {
