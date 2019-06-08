@@ -1,6 +1,9 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
-<img width="300" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/gif.gif" />
+<img width="250" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/theme-update.gif"/>
+<img width="250" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/gif.gif" />
+
+
 
 demo  here: https://gifs.com/gif/yo9GZP
 
@@ -13,10 +16,10 @@ This application manages it's state using own implementation of Rxjs BehaviorSub
 We are using firebase realtime database for storing all our json data.
 
 We divide components in two categories
-1) Stateful
-2) Stateless - Auth component
+1) Stateful - components that manage internal state
+2) Stateless - components that don't have internal state
 
-We have
+Application contains: 
 1) Shared module that contains our stateless components
 2) Core module that contain our basic functionality like show modal/dialog
 3) Auth module
@@ -33,6 +36,10 @@ We have currently
 3) About component, nothing much
 4) Register component
 5) Login component
+
+New Feature:
+Theme update, you can manually update the theme of your choice from given list of themes. ✔
+
 
 
 
