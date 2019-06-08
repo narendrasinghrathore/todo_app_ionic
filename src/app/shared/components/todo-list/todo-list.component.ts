@@ -22,6 +22,10 @@ export class TodoListComponent implements OnInit {
 
   @Output()
   delete: EventEmitter<Todo> = new EventEmitter();
+
+  @Output()
+  complete: EventEmitter<Todo> = new EventEmitter();
+
   constructor() { }
 
   openTodo(item: Todo) {
@@ -34,6 +38,16 @@ export class TodoListComponent implements OnInit {
 
   deleteTodo(item: Todo) {
     this.delete.emit(item);
+  }
+
+  /**
+   * Emit item is marking as completed or not completed
+   * @param flag boolean
+   * @param item Todo
+   */
+  markComplete(flag: boolean, item: Todo) {
+    item = { ...item, isCompleted: flag };
+    this.complete.emit(item);
   }
 
   ngOnInit() { }

@@ -34,8 +34,9 @@
     </ion-refresher-content>
   </ion-refresher>
   <ng-container *ngIf="todoList$ | async as list else loading">
-    <app-todo-list [list]="list" (open)="openTodo($event)" (restore)="restoreTodo($event)"
-      (delete)="confirmDelete($event)"></app-todo-list>
+    <app-todo-list [list]="list" (open)="openTodo($event)" 
+    (restore)="restoreTodo($event)" (delete)="confirmDelete($event)"
+    (complete)="markComplete($event)"></app-todo-list>
   </ng-container>
   <ng-template #loading>
     <app-loading>

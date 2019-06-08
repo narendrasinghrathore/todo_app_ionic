@@ -57,6 +57,7 @@ export class AppFirebaseCRUDService {
         todo.date = new Date(todo.timestamp).toDateString();
         todo.key = todo.timestamp.toString();
         todo.isNew = true;
+        todo.isCompleted = false;
         return this.appStorage.addTodo(todo);
     }
 

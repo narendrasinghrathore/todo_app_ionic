@@ -2,34 +2,53 @@
   <!-- <ion-img src="/assets/shapes.svg"></ion-img> -->
   <ion-card-header>
 
-    <ion-card-title (click)="openTodo(item)">
-      <ng-container *ngIf="isOffline(item); else itemoffline">
-        <ion-icon name="cloud-upload"></ion-icon>
+    <ion-card-title>
+      <ng-container *ngIf="item?.isCompleted; then completed else notCompleted">
       </ng-container>
-      <ng-template #itemoffline>
-        <ion-icon name="cloud-done"></ion-icon>
+      <ng-template #notCompleted>
+        <ion-button fill="clear" aria-label="Click to mark todo item, completed" (click)="markComplete(true,item)">
+          <ion-icon slot="icon-only" name="radio-button-off"></ion-icon>
+        </ion-button>
       </ng-template>
+      <ng-template #completed>
+        <ion-button fill="clear" aria-label="Click to mark todo item, uncomplete" (click)="markComplete(false,item)">
+          <ion-icon slot="icon-only" name="checkmark"></ion-icon>
+        </ion-button>
+      </ng-template>
+
       {{item.title}}
 
     </ion-card-title>
-    <ion-card-subtitle>
-      <ion-icon name="clock"></ion-icon>
+    <ion-card-subtitle aria-label="Date on which todo item was created">
+      <ion-icon name="calendar"></ion-icon>
       {{item.timestamp | date : "M/d/yy, h:mm a"}}
     </ion-card-subtitle>
   </ion-card-header>
   <ion-card-content>
 
     <ion-buttons class="ion-float-right">
-      <ion-button fill="clear" (click)="openTodo(item)">
+      <ng-container *ngIf="isOffline(item); else itemoffline">
+        <ion-button fill="clear" aria-label="Todo item is not synced with cloud">
+          <ion-icon slot="icon-only" name="cloud-upload"></ion-icon>
+        </ion-button>
+      </ng-container>
+      <ng-template #itemoffline>
+        <ion-button fill="clear" aria-label="Todo item is synced with cloud">
+          <ion-icon slot="icon-only" name="cloud-done"></ion-icon>
+        </ion-button>
+        <ion-icon name="cloud-done"></ion-icon>
+      </ng-template>
+
+      <ion-button fill="clear" aria-label="Click to open todo item" (click)="openTodo(item)">
         <ion-icon slot="icon-only" name="open"></ion-icon>
       </ion-button>
       <ng-container *ngIf="item?.isDeleted === true">
-        <ion-button fill="clear" (click)="restoreTodo(item)">
+        <ion-button fill="clear" aria-label="Click to undo deleted item" (click)="restoreTodo(item)">
           <ion-icon name="undo"></ion-icon>
         </ion-button>
       </ng-container>
       <ng-container *ngIf="item?.isDeleted === false || item?.isDeleted === undefined">
-        <ion-button fill="clear" (click)="deleteTodo(item)">
+        <ion-button fill="clear" aria-label="Click to delete item" (click)="deleteTodo(item)">
           <ion-icon name="trash"></ion-icon>
         </ion-button>
       </ng-container>
@@ -38,7 +57,7 @@
 </ion-card>
 <ng-container *ngIf="list.length === 0">
   <ion-item>
-    <ion-label>
+    <ion-label aria-label="No todo items to show">
       <ion-icon name="information-circle" slot="end"></ion-icon>
       Nothing found.
     </ion-label>

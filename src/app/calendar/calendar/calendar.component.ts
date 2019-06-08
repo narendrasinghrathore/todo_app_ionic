@@ -155,6 +155,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
 
+  async markComplete(item: Todo) {
+    this.fire.updateTodo(item, item.key);
+    this.core.displayToast(`Todo marked ${item.isCompleted ? 'done.' : 'uncomplete.'}`);
+  }
+
+
   ngOnDestroy(): void {
     this.week$.unsubscribe();
   }
