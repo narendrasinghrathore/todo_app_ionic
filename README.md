@@ -1,5 +1,9 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
+
+<img width="850" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/desktop-calendar-snap.PNG" />
+
+
 <img width="250" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/theme-update.gif"/>
 <img width="250" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/gif.gif" />
 
