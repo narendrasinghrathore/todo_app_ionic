@@ -1,10 +1,12 @@
 Todo application using ionic v4 angular v7 and firebase as our backend server.
 
-
+**Desktop App Snapshot **
 <img width="850" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/desktop-calendar-snap.PNG" />
 
+**Mobile App Performance Audit Snapshot **
 <img  width="900" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/desktop-calendar-snap-mobile-performance-audit.PNG"/>
 
+**Desktop Application Performance Audit Snapshot **
 <img  width="900" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/desktop-calendar-snap-desktop-performance-audit.PNG"/>
 
 <img width="250" src="https://github.com/narendrasinghrathore/todo_app_ionic/blob/master/theme-update.gif"/>
