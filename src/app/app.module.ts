@@ -15,6 +15,8 @@ import { GuardModule } from './guards/guard.module';
 import { Store } from 'store';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from './calendar/calendar.module';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +32,8 @@ import { CalendarModule } from './calendar/calendar.module';
     GuardModule.forRoot(),
     SharedModule.forRoot(),
     AppRoutingModule,
-    CalendarModule.forRoot()
+    CalendarModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Store,

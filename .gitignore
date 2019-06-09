@@ -32,3 +32,6 @@ $RECYCLE.BIN/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+firebase.json
+.firebaserc
+.firebase/hosting.d3d3.cache
