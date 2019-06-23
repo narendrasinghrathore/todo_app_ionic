@@ -41,7 +41,7 @@ export class Store {
         return this.subject.value;
     }
 
-    select<T>(name: AppStateProps): Observable<T> {
+    select<T>(name: AppStateProps): Observable<T> | any {
         return this.store
             .pipe(
                 pluck(name)

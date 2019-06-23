@@ -4,8 +4,7 @@ import { Todo } from '../models/todo.model';
 import { Observable, from, Subject, of } from 'rxjs';
 import { IAppStorageOffline } from './storageOffline.interface';
 import { Store, AppStateProps } from 'store';
-import { tap, switchMap, mergeMap, map, take } from 'rxjs/operators';
-import { pipe } from '@angular/core/src/render3';
+import { tap, switchMap, mergeMap, take } from 'rxjs/operators';
 
 export enum DatabaseEvent {
   Add = 0,

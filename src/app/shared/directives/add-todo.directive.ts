@@ -1,9 +1,7 @@
-import { Directive, TemplateRef, ViewContainerRef, AfterViewInit, OnDestroy, ComponentFactoryResolver, Inject } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, AfterViewInit, OnDestroy, ComponentFactoryResolver } from '@angular/core';
 import { AddTodoContainerComponent } from '../container/add-todo-container/add-todo-container.component';
 import { SharedService } from '../services/shared.service';
-import { AppFirebaseService } from 'src/app/firebase/firebase.service';
-import { AppFirebaseCRUDService } from 'src/app/firebase/crud.service';
-import { INJECTOR } from '@angular/core/src/render3/interfaces/view';
+import { AppFirebaseCRUDService } from '../../../app/firebase/crud.service';
 
 @Directive({
   selector: '[appAddTodo]'
