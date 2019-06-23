@@ -33,7 +33,8 @@ import { environment } from '../environments/environment';
     SharedModule.forRoot(),
     AppRoutingModule,
     CalendarModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', 
+    { enabled: environment.production }),
   ],
   providers: [
     Store,

@@ -10,31 +10,27 @@ const routes: Routes = [
   },
   {
     path: 'calendar',
-    loadChildren: './calendar/calendar.module#CalendarModule',
+    loadChildren: () => import('./calendar/calendar.module').then(calendar => calendar.CalendarModule),
     pathMatch: 'full',
     canActivate: [HomeGuard]
   },
   {
     path: 'home',
-    loadChildren: './home/home.module#HomePageModule',
+    loadChildren: () => import('./home/home.module').then(home => home.HomePageModule),
     canActivate: [HomeGuard]
   },
   {
     path: 'setting',
-    loadChildren: './setting/setting.module#SettingModule',
+    loadChildren: () => import('./setting/setting.module').then(setting => setting.SettingModule ),
     canActivate: [HomeGuard]
   },
   {
-    path: 'list',
-    loadChildren: './list/list.module#ListPageModule'
-  },
-  {
     path: 'login',
-    loadChildren: './login/login.module#LoginModule'
+    loadChildren: () => import('./login/login.module').then(login => login.LoginModule)
   },
   {
     path: 'register',
-    loadChildren: './register/register.module#RegisterModule'
+    loadChildren: () => import('./register/register.module').then(reg => reg.RegisterModule)
   }
 ];
 
