@@ -24,6 +24,7 @@ import { AppFirebaseModule } from '../firebase/firebase.module';
       }
     ]),
   ],
-  declarations: [HomePage]
+  declarations: [HomePage],
+  exports: [RouterModule]
 })
-export class HomePageModule {}
+export class HomePageModule { }

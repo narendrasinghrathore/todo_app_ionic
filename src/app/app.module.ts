@@ -25,16 +25,16 @@ import { environment } from '../environments/environment';
     BrowserModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot({
-      name:'myApp'
+      name: 'myApp'
     }),
     CoreModule.forRoot(),
     AppFirebaseModule.forRoot(),
     GuardModule.forRoot(),
     SharedModule.forRoot(),
     AppRoutingModule,
-    CalendarModule.forRoot(),
-    ServiceWorkerModule.register('ngsw-worker.js', 
-    { enabled: environment.production }),
+    // CalendarModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js',
+      { enabled: environment.production }),
   ],
   providers: [
     Store,
@@ -44,4 +44,4 @@ import { environment } from '../environments/environment';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

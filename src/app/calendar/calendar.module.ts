@@ -27,7 +27,7 @@ import { SharedModule } from '../shared/shared.module';
     ])
   ],
   providers: [CalendarService],
-  exports: [CalendarComponent]
+  exports: [RouterModule, CalendarComponent]
 })
 export class CalendarModule {
   static forRoot(): ModuleWithProviders {

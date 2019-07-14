@@ -4,24 +4,8 @@ import { HomeGuard } from './guards/home.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'calendar',
-    pathMatch: 'full'
-  },
-  {
-    path: 'calendar',
-    loadChildren: () => import('./calendar/calendar.module').then(calendar => calendar.CalendarModule),
-    pathMatch: 'full',
-    canActivate: [HomeGuard]
-  },
-  {
     path: 'home',
-    loadChildren: () => import('./home/home.module').then(home => home.HomePageModule),
-    canActivate: [HomeGuard]
-  },
-  {
-    path: 'setting',
-    loadChildren: () => import('./setting/setting.module').then(setting => setting.SettingModule ),
+    loadChildren: () => import('./shell/shell.module').then(shell => shell.ShellModule),
     canActivate: [HomeGuard]
   },
   {
@@ -31,6 +15,11 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./register/register.module').then(reg => reg.RegisterModule)
+  },
+  {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full'
   }
 ];
 

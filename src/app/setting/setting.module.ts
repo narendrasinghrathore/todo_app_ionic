@@ -31,6 +31,7 @@ import { CoreModule } from '../core/core.module';
         ]
       }
     ])
-  ]
+  ],
+  exports: [RouterModule]
 })
 export class SettingModule { }
