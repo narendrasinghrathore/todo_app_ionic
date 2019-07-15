@@ -4,8 +4,6 @@ import { Subscription, Observable } from 'rxjs';
 import { Todo } from '../../models/todo.model';
 import { AppFirebaseCRUDService } from '../../firebase/crud.service';
 import { Store, AppStateProps } from 'store';
-import { switchMap, take, } from 'rxjs/operators';
-import { of } from 'rxjs';
 import { SharedService } from '../../shared/services/shared.service';
 import { CoreService } from '../../core/core.service';
 @Component({
@@ -43,7 +41,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    this.fire.offlineDatabaseEvent.subscribe((event) => {
+    this.fire.offlineDatabaseEvent.subscribe(() => {
       this.getTodosForSelectedDate(this.selectedDateFromWeek);
     });
 
@@ -115,8 +113,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   async doRefresh(event) {
     this.fire.syncDataOnline(() => {
       this.fire.getListFromOnline(this.selectedDateFromWeek.date.toDateString(), 'date')
-        .subscribe((a) => {
-        }, err => { }, () => {
+        .subscribe(() => {
+        }, () => { }, () => {
           console.log('Completed', new Date());
           setTimeout(() => {
             this.getTodosForSelectedDate(this.selectedDateFromWeek);
@@ -164,6 +162,4 @@ export class CalendarComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.week$.unsubscribe();
   }
-
-
 }
