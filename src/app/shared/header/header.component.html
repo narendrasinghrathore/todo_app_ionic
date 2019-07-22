@@ -1,17 +1,21 @@
-<ion-header class="ion-header-custom" color="primary">
-  <ion-toolbar [color]="'primary'">
+<ion-header>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title color="light">
-      {{title}}
+      {{ title }}
     </ion-title>
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon name="funnel"></ion-icon>
       </ion-button>
       <ion-button>
-        <ion-icon name="globe" slot="icon-only" [color]="online === true ? 'primary' : 'warning'"></ion-icon>
+        <ion-icon
+          name="globe"
+          slot="icon-only"
+          [color]="online === true ? 'primary' : 'warning'"
+        ></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>

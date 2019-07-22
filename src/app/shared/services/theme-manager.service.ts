@@ -2,7 +2,7 @@ import { Injectable, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import * as Color from 'color';
 import { Storage } from '@ionic/storage';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable, of } from 'rxjs';
 import { ITheme } from '../../../app/models/Theme';
 import { take, tap } from 'rxjs/operators';
 
@@ -12,7 +12,20 @@ import { take, tap } from 'rxjs/operators';
 export class ThemeManagerService {
   themes_: ITheme[] = [
     {
-      name: 'Light Yellow', id: 1, style: {
+      name: 'Dark Pink', id: 1, style: {
+        primary: 'rgba(0, 0, 0, 1)',
+        secondary: 'rgba(244, 0, 104, 1)',
+        light: 'rgba(244, 245, 248, 1)',
+        medium: 'rgba(152, 154, 162, 1)',
+        dark: 'rgba(229, 98, 94, 1)',
+        danger: 'rgba(240, 65, 65, 1)',
+        warning: 'rgba(255, 206, 0, 1)',
+        success: 'rgba(16, 220, 96, 1)',
+        tertiary: 'rgba(247, 77, 145, 1)'
+      },
+    },
+    {
+      name: 'Light Yellow', id: 2, style: {
         primary: 'rgba(229, 224, 89, 1)',
         secondary: 'rgba(189, 211, 88, 1)',
         light: 'rgba(255, 255, 255, 1)',
@@ -21,25 +34,20 @@ export class ThemeManagerService {
       },
     },
     {
-      name: 'Oyster Pink', id: 2, style: {
-        primary: 'rgba(206, 190, 190, 1)',
-        secondary: 'rgba(236, 226, 208, 1)',
-        light: 'rgba(213, 185, 178, 1)',
-        medium: 'rgba(162, 103, 105, 1)',
-        dark: 'rgba(109, 46, 70, 1)',
+      name: 'Dark Green', id: 4, style: {
+        primary: 'rgba(0, 0, 0, 1)',
+        secondary: 'rgba(37, 153, 9, 1)',
+        light: 'rgba(244, 245, 248, 1)',
+        medium: 'rgba(152, 154, 162, 1)',
+        dark: 'rgba(229, 98, 94, 1)',
+        danger: 'rgba(240, 65, 65, 1)',
+        warning: 'rgba(255, 206, 0, 1)',
+        success: 'rgba(16, 220, 96, 1)',
+        tertiary: 'rgba(247, 77, 145, 1)'
       },
     },
     {
-      name: 'Dark Green', id: 3, style: {
-        primary: 'rgba(7, 59, 58, 1)',
-        secondary: 'rgba(7, 59, 58, 1)',
-        light: 'rgba(8, 160, 69, 1)',
-        medium: 'rgba(107, 191, 89, 1)',
-        dark: 'rgba(221, 183, 113, 1)'
-      },
-    },
-    {
-      name: 'Cream Horizon', id: 4, style: {
+      name: 'Cream Horizon', id: 5, style: {
         primary: 'rgba(98, 131, 149, 1)',
         secondary: 'rgba(150, 137, 123, 1)',
         light: 'rgba(223, 213, 165, 1)',
@@ -47,15 +55,6 @@ export class ThemeManagerService {
         dark: 'rgba(207, 153, 95, 1)'
       },
     },
-    {
-      name: 'Santas Grey', id: 5, style: {
-        primary: '#000000',
-        secondary: 'rgba(102, 102, 110, 1)',
-        light: 'rgba(153, 153, 161, 1)',
-        medium: 'rgba(230, 230, 233, 1)',
-        dark: 'rgba(244, 244, 246, 1)'
-      },
-    }
   ];
 
 
@@ -73,18 +72,16 @@ export class ThemeManagerService {
   }
 
   /**
-   * Will return previously applied theme as on Observable and unsubscribe on
+   * Will emit previously applied theme  and unsubscribe on
    * it's own.
    */
-  getDefaultTheme(): Observable<ITheme> {
-    return from(this.storage.get('theme'))
-      .pipe(
-        take(1),
-        tap((theme: ITheme) => {
-          this.setGlobalCSS(CSSTextGenerator(theme.style));
-          this.currentTheme.next(theme);
-        })
-      );
+  getDefaultTheme(): void {
+    from(this.storage.get('theme'))
+      .pipe(take(1))
+      .subscribe((theme: ITheme) => {
+        this.setGlobalCSS(CSSTextGenerator(theme.style));
+        this.currentTheme.next(theme);
+      });
   }
 
   /**
@@ -96,6 +93,7 @@ export class ThemeManagerService {
 
   // Override all global variables with a new theme
   setTheme(id): void {
+    console.log(id);
     const theme: ITheme = this.themes.filter(a => a.id === id)[0];
     const cssText = CSSTextGenerator(theme.style);
     this.setGlobalCSS(cssText);

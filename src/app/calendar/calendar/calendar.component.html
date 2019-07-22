@@ -1,45 +1,62 @@
-<ion-header color="primary">
-  <ion-toolbar color="primary">
+<ion-header>
+  <ion-toolbar color="secondary">
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title color="light">
-      Home
+      HOME
     </ion-title>
     <ion-buttons slot="end">
       <ion-button>
-        <ion-datetime [value]="selectedDate.toISOString()" placeholder="Select date" display-format="MMM DD, YYYY"
-          picker-format="MMM DD, YYYY" (ionChange)="updateDate($event)"></ion-datetime>
+        <ion-datetime
+          [value]="selectedDate.toISOString()"
+          placeholder="Select date"
+          display-format="MMM DD, YYYY"
+          picker-format="MMM DD, YYYY"
+          (ionChange)="updateDate($event)"
+        ></ion-datetime>
       </ion-button>
       <ion-button (click)="selectToday()">
         <ion-icon name="today"></ion-icon>
       </ion-button>
     </ion-buttons>
-
   </ion-toolbar>
 </ion-header>
-<app-week [week]="week" (selectedDate)="getTodosForSelectedDate($event)" [defaultSelectedDate]="todayDate"></app-week>
-<ion-item>
-  <ion-label>{{showDeleted.value}}</ion-label>
-  <ion-checkbox slot="end" color="primary" [checked]="showDeleted.isChecked" (ionChange)="showAll()"></ion-checkbox>
-</ion-item>
-<app-add-todo-container color="light"></app-add-todo-container>
-<ion-content>
+<ion-content color="primary">
+  <app-week
+    [week]="week"
+    (selectedDate)="getTodosForSelectedDate($event)"
+    [defaultSelectedDate]="todayDate"
+  ></app-week>
+  <ion-item color="primary">
+    <ion-label color="light">{{ showDeleted.value }}</ion-label>
+    <ion-checkbox
+      slot="end"
+      color="primary"
+      [checked]="showDeleted.isChecked"
+      (ionChange)="showAll()"
+    ></ion-checkbox>
+  </ion-item>
+  <app-add-todo-container color="light"></app-add-todo-container>
   <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content 
-    pullingIcon="arrow-dropdown" 
-    pullingText="Pull to refresh" 
-    refreshingSpinner="crescent"
-    refreshingText="Syncing data...">
+    <ion-refresher-content
+      pullingIcon="arrow-dropdown"
+      pullingText="Pull to refresh"
+      refreshingSpinner="crescent"
+      refreshingText="Syncing data..."
+    >
     </ion-refresher-content>
   </ion-refresher>
-  <ng-container *ngIf="todoList$ | async as list else loading">
-    <app-todo-list [list]="list" (open)="openTodo($event)" 
-    (restore)="restoreTodo($event)" (delete)="confirmDelete($event)"
-    (complete)="markComplete($event)"></app-todo-list>
+  <ng-container *ngIf="todoList$ | async as list; else loading">
+    <app-todo-list
+      [list]="list"
+      (open)="openTodo($event)"
+      (restore)="restoreTodo($event)"
+      (delete)="confirmDelete($event)"
+      (complete)="markComplete($event)"
+    ></app-todo-list>
   </ng-container>
   <ng-template #loading>
-    <app-loading>
-    </app-loading>
+    <app-loading> </app-loading>
   </ng-template>
 </ion-content>

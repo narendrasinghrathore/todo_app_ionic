@@ -1,18 +1,26 @@
-<ion-split-pane>
-  <ion-menu>
-    <ion-header>
-      <ion-toolbar>
+<ion-split-pane color="secondary">
+  <ion-menu color="secondary">
+    <ion-header color="secondary">
+      <ion-toolbar color="secondary">
         <ion-title>Menu</ion-title>
       </ion-toolbar>
-      <app-color-selection></app-color-selection>
+      <app-color-selection
+        [selectedTheme]="themeManager.currentTheme | async"
+        [colors]="themeManager.themes"
+        (colorChange)="changeTheme($event)"
+      ></app-color-selection>
     </ion-header>
-    <ion-content>
-      <ion-list>
+    <ion-content color="secondary">
+      <ion-list class="no-padd-top-bottom">
         <ion-menu-toggle auto-hide="false" *ngFor="let p of appPages">
-          <ion-item [routerDirection]="'root'" [routerLink]="[p.url]">
+          <ion-item
+            color="secondary"
+            [routerDirection]="'root'"
+            [routerLink]="[p.url]"
+          >
             <ion-icon slot="start" [name]="p.icon"></ion-icon>
             <ion-label>
-              {{p.title}}
+              {{ p.title }}
             </ion-label>
           </ion-item>
         </ion-menu-toggle>

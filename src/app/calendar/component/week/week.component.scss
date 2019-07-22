@@ -1,20 +1,10 @@
-ion-segment-button {
-  --color-checked: black;
-  --background-checked: var(--ion-color-medium); // #7ccd69;
-  --background-activated: #7ccd69;
-  --color-activated: var(--ion-color-primary); //black;
-}
+.container {
+  margin: 10px;
 
-ion-segment-button {
-  --color: var(--ion-color-dark);
-  --background: var(--ion-color-light);
-}
-
-ion-toolbar {
-  --color: #303030;
-  // --background: #7ccd69;
-
-  .title {
-    font-weight: 700;
+  ion-segment-button {
+    --color-checked: var(--ion-color-secondary);
+    --background-checked: var(--ion-color-secondary);
+    --background-activated: var(--ion-color-secondary);
+    --color-activated: var(--ion-color-secondary);
   }
 }

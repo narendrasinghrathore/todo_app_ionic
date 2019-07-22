@@ -1,9 +1,16 @@
 <div class="colors">
-  <ion-item>
+  <ion-item color="secondary">
     <ion-label>Selected Theme:</ion-label>
-    <ion-select (ionChange)="changeTheme($event)" [value]="selectedTheme?.id" okText="Okay" cancelText="Dismiss">
-      <ng-container *ngFor="let color of colors;">
-        <ion-select-option [value]="color.id">{{color.name}}</ion-select-option>
+    <ion-select #selector
+      (ionChange)="changeTheme(selector.value)"
+      [value]="selectedTheme?.id"
+      okText="Okay"
+      cancelText="Dismiss"
+    >
+      <ng-container *ngFor="let color of colors">
+        <ion-select-option [value]="color.id">{{
+          color.name
+        }}</ion-select-option>
       </ng-container>
     </ion-select>
   </ion-item>

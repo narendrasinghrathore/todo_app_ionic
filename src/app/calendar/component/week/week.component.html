@@ -1,12 +1,21 @@
-<ion-toolbar>
-  <ion-title class="title">{{defaultSelectedDate.date | date: 'MMMM, yyyy'}}</ion-title>
-</ion-toolbar>
-<ion-segment scrollable>
-  <ion-segment-button layout="icon-top" [checked]="defaultSelectedDate?.displayDate === item?.displayDate"
-    [value]="item?.displayDate" (ionSelect)="getSelectedDate(item)" *ngFor="let item of week">
-    <ion-icon name="calendar"></ion-icon>
-    <ion-label>
-      {{item.date | date: 'dd' }}
-    </ion-label>
-  </ion-segment-button>
-</ion-segment>
+<div class="container">
+  <ion-toolbar color="primary">
+    <ion-title color="light" class="title">{{
+      defaultSelectedDate.date | date: "MMMM, yyyy"
+    }}</ion-title>
+  </ion-toolbar>
+  <ion-segment scrollable>
+    <ion-segment-button 
+      layout="icon-top"
+      [checked]="defaultSelectedDate?.displayDate === item?.displayDate"
+      [value]="item?.displayDate"
+      (ionSelect)="getSelectedDate(item)"
+      *ngFor="let item of week"
+    >
+      <ion-icon name="calendar" color="light"></ion-icon>
+      <ion-label color="light">
+        {{ item.date | date: "dd" }}
+      </ion-label>
+    </ion-segment-button>
+  </ion-segment>
+</div>

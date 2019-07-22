@@ -4,12 +4,6 @@ import { Todo } from '../../models/todo.model';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
-
-// TestBed.initTestEnvironment(
-//   BrowserDynamicTestingModule,
-//   platformBrowserDynamicTesting()
-// );
-
 const todoList: Todo[] =
   [
     {
@@ -29,6 +23,7 @@ const todoList: Todo[] =
       timestamp: 1552884321876
     }
   ];
+
 describe('TodoListPipe', () => {
 
   describe(' Shallow Test', () => {
@@ -53,7 +48,7 @@ describe('TodoListPipe', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        declarations: [TodoListPipe, TestComponent,],
+        declarations: [TodoListPipe, TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);
 
