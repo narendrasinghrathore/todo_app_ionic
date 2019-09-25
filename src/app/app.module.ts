@@ -17,6 +17,12 @@ import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [AppComponent],
@@ -35,6 +41,16 @@ import { environment } from '../environments/environment';
     // CalendarModule.forRoot(),
     ServiceWorkerModule.register('ngsw-worker.js',
       { enabled: environment.production }),
+    StoreModule.forRoot(reducers, {
+      metaReducers,
+      runtimeChecks: {
+        strictStateImmutability: true,
+        strictActionImmutability: true
+      }
+    }),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    EffectsModule.forRoot([AppEffects]),
+    StoreRouterConnectingModule.forRoot(),
   ],
   providers: [
     Store,
