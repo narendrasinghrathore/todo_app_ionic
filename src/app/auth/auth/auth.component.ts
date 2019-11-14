@@ -6,8 +6,7 @@ import { distinctUntilChanged } from 'rxjs/operators';
   selector: 'app-auth',
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  encapsulation: ViewEncapsulation.ShadowDom
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthComponent implements OnInit, OnDestroy {
 

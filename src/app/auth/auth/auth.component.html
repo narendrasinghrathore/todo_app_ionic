@@ -4,12 +4,13 @@
       <ion-card-header>
         <ion-card-title>
           <ng-content select=".heading"></ng-content>
+          <ng-content select="ion-img"></ng-content>
         </ion-card-title>
       </ion-card-header>
       <ion-card-content>
         <div>
           <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
-            <ion-item no-padding>
+            <ion-item>
               <ion-label>
                 <ion-icon name="person"></ion-icon>
               </ion-label>
