@@ -14,13 +14,21 @@
               <ion-label>
                 <ion-icon name="person"></ion-icon>
               </ion-label>
-              <ion-input type="text" formControlName="email" placeholder="Email"></ion-input>
+              <ion-input
+                type="text"
+                formControlName="email"
+                placeholder="Email"
+              ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label>
                 <ion-icon name="key"></ion-icon>
               </ion-label>
-              <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
+              <ion-input
+                type="password"
+                formControlName="password"
+                placeholder="Password"
+              ></ion-input>
             </ion-item>
             <ng-content select=".btn"></ng-content>
           </form>
@@ -49,7 +57,7 @@
               Password should be min(6) characters.
             </ion-label>
             <ion-badge color="light">
-              {{password.value.length}}
+              {{ password.value.length }}
             </ion-badge>
             <ion-icon name="information-circle" slot="end"></ion-icon>
           </ion-item>
@@ -59,13 +67,5 @@
         </div>
       </ion-card-content>
     </ion-card>
-
-    <!-- <div>
-      <ion-buttons slot="end">
-        <ion-button color="secondary" (click)="googleLogin()">
-          <ion-icon slot="icon-only" name="logo-google"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-    </div> -->
   </div>
 </ion-content>

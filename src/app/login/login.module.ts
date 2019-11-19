@@ -13,11 +13,18 @@ import { IonicModule } from '@ionic/angular';
 // routes def
 const LoginRoute: Routes = [
   {
-    path: '', pathMatch: 'full', component: LoginComponent
+    path: '',
+    pathMatch: 'full',
+    component: LoginComponent
   }
-
 ];
 
+// Store
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './store/login.reducer';
+import { environment } from '../../environments/environment';
+import { EffectsModule } from '@ngrx/effects';
+import { LoginEffectService } from './store/login.effect';
 
 @NgModule({
   declarations: [LoginComponent],
@@ -25,7 +32,9 @@ const LoginRoute: Routes = [
     CommonModule,
     RouterModule.forChild(LoginRoute),
     IonicModule,
-    AuthModule
-  ],
+    AuthModule,
+    StoreModule.forFeature(environment.store.login.storeName, reducer),
+    EffectsModule.forFeature([LoginEffectService])
+  ]
 })
-export class LoginModule { }
+export class LoginModule {}
