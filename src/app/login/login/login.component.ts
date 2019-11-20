@@ -4,9 +4,12 @@ import { Router } from '@angular/router';
 import { CoreService } from 'src/app/core/core.service';
 import { FireBaseHttpErrorResponse } from 'src/app/models/firebase.model';
 import { FormGroup } from '@angular/forms';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 import { ILoginState } from '../store/login.reducer';
 import { Login } from '../store/login.action';
+
+import * as fromLoginSelectors from '../store/login.selector';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +18,18 @@ import { Login } from '../store/login.action';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent implements OnInit {
+  /**
+   * Form is valid or not
+   */
   formValid = false;
+  /**
+   * Login request initiated
+   */
+  loadingStatus: Observable<boolean>;
+  /**
+   * Successfully login
+   */
+  loadedStatus: Observable<boolean>;
 
   constructor(
     private fireAuth: AppFirebaseService,
@@ -26,12 +40,21 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.fireAuth.logout();
+    /**
+     * Loaded status
+     */
+    this.loadedStatus = this.store.select(fromLoginSelectors.selectLoaded);
+    /**
+     * Loading status
+     */
+    this.loadingStatus = this.store.select(fromLoginSelectors.selectLoading);
   }
 
   onSubmit(event: FormGroup) {
     this.store.dispatch(new Login(event.value));
     // this.fireAuth.signInEmail(event.value)
-    //   .subscribe(() => {
+    //   .subscribe((data) => {
+    //     console.log(data);
     //     this.onSuccessLogin();
     //   }, (err: FireBaseHttpErrorResponse) => {
     //     console.log(err);

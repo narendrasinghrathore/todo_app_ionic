@@ -1,8 +1,6 @@
 import { LoginActionsType } from './login.action';
 import { ILogin } from '../../../app/models/Login';
-
 import * as fromLoginActions from './login.action';
-import { strict } from 'assert';
 
 export interface ILoginState {
   user: ILogin | {};
@@ -16,36 +14,36 @@ export const initialState: ILoginState = {
   loaded: false
 };
 
-export function reducer(state = initialState, action: LoginActionsType) {
+export function reducer(
+  state = initialState,
+  action: LoginActionsType
+): ILoginState {
   switch (action.type) {
-    case fromLoginActions.LOGIN:
-      console.log('Here')
-      state = {
+    case fromLoginActions.LOGIN: {
+      return {
         ...state,
         loading: true
       };
-      break;
-
-    case fromLoginActions.LOGIN_SUCCESS:
-        console.log('Sucess Here')
-      state = {
-        ...state,
+    }
+    case fromLoginActions.LOGIN_SUCCESS: {
+      const newState = { ...state, ...action.payload };
+      return {
+        ...newState,
         loading: false,
         loaded: true
       };
-      break;
-
-    case fromLoginActions.LOGIN_FAIL:
-      state = {
+    }
+    case fromLoginActions.LOGIN_FAIL: {
+      console.log(action.payload);
+      return {
         ...state,
         loading: false,
         loaded: false
       };
-      break;
+    }
 
     default:
       return state;
-      break;
   }
 
   return state;
