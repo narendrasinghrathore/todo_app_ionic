@@ -1,15 +1,11 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { AppFirebaseService } from 'src/app/firebase/firebase.service';
-import { Router } from '@angular/router';
-import { CoreService } from 'src/app/core/core.service';
-import { FireBaseHttpErrorResponse } from 'src/app/models/firebase.model';
 import { FormGroup } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { ILoginState } from '../store/login.reducer';
-import { Login } from '../store/login.action';
+import { Login, Logout } from '../store/login.action';
 
 import * as fromLoginSelectors from '../store/login.selector';
-import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -25,53 +21,26 @@ export class LoginComponent implements OnInit {
   /**
    * Login request initiated
    */
-  loadingStatus: Observable<boolean>;
+  loadingStatus = this.store.select(fromLoginSelectors.selectLoading);
   /**
    * Successfully login
    */
-  loadedStatus: Observable<boolean>;
+  loadedStatus = this.store.select(fromLoginSelectors.selectLoaded);
 
-  constructor(
-    private fireAuth: AppFirebaseService,
-    private route: Router,
-    private coreService: CoreService,
-    private store: Store<ILoginState>
-  ) {}
+  constructor(private store: Store<ILoginState>) {}
 
   ngOnInit() {
-    this.fireAuth.logout();
     /**
-     * Loaded status
+     * Dispatch logout action on component load
      */
-    this.loadedStatus = this.store.select(fromLoginSelectors.selectLoaded);
-    /**
-     * Loading status
-     */
-    this.loadingStatus = this.store.select(fromLoginSelectors.selectLoading);
+    // this.store.dispatch(new Logout());
   }
 
   onSubmit(event: FormGroup) {
     this.store.dispatch(new Login(event.value));
-    // this.fireAuth.signInEmail(event.value)
-    //   .subscribe((data) => {
-    //     console.log(data);
-    //     this.onSuccessLogin();
-    //   }, (err: FireBaseHttpErrorResponse) => {
-    //     console.log(err);
-    //     this.coreService.displayToast(`${err.message}`);
-    //   });
   }
 
   isFormValid(event: boolean) {
     this.formValid = event;
-  }
-
-  signInGoogle() {
-    this.fireAuth.signInGoogle().subscribe(() => this.onSuccessLogin());
-  }
-
-  onSuccessLogin() {
-    this.coreService.displayToast(`Logged in, let explore the app.`);
-    this.route.navigate(['/home']);
   }
 }

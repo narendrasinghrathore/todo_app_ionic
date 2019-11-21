@@ -75,8 +75,10 @@ export class AppFirebaseService {
       try {
         this.fireAUTH.auth
           .signInWithEmailAndPassword(user.email, user.password)
-          .then(data => {
-            obs.next(data);
+          .then((data: any) => {
+            const { email, phoneNumber, uid } = data['user'];
+            const newData = { email, phoneNumber, uid };
+            obs.next(newData);
           })
           .catch(err => {
             obs.error(err);
@@ -106,7 +108,7 @@ export class AppFirebaseService {
   }
 
   logout() {
-    this.uid$.next(null);
     this.fireAUTH.auth.signOut();
+    this.uid$.next(null);
   }
 }

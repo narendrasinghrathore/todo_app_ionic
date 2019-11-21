@@ -2,7 +2,6 @@
   class="ion-page"
   (submitted)="onSubmit($event)"
   (formValid)="isFormValid($event)"
-  (onGoogleLogin)="signInGoogle()"
 >
   <ion-img src="/assets/login.svg" class="logo"></ion-img>
   <div class="heading">Login</div>
@@ -13,15 +12,14 @@
     class="btn"
     [disabled]="!formValid"
   >
-    Sign in {{ loadedStatus | async }}
+    <ng-container
+      *ngIf="loadingStatus | async as loading; then spinner; else text"
+    >
+    </ng-container>
+    <ng-template #spinner><ion-spinner name="dots"></ion-spinner></ng-template>
+    <ng-template #text>Sign in</ng-template>
   </ion-button>
   <ion-button class="action" href="/register" fill="clear">
     Not registered, Create a free account here.
   </ion-button>
 </app-auth>
-<ion-progress-bar
-  type="indeterminate"
-  color="primary"
-  value="0.5"
-  *ngIf="loadingStatus | async"
-></ion-progress-bar>

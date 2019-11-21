@@ -21,8 +21,8 @@ const LoginRoute: Routes = [
 
 // Store
 import { StoreModule } from '@ngrx/store';
-import { reducer } from './store/login.reducer';
-import { environment } from '../../environments/environment';
+import { reducers } from './store/login.reducer';
+import { environment } from 'environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { LoginEffectService } from './store/login.effect';
 
@@ -33,7 +33,7 @@ import { LoginEffectService } from './store/login.effect';
     RouterModule.forChild(LoginRoute),
     IonicModule,
     AuthModule,
-    StoreModule.forFeature(environment.store.login.storeName, reducer),
+    StoreModule.forFeature(environment.store.login.storeName, reducers),
     EffectsModule.forFeature([LoginEffectService])
   ]
 })

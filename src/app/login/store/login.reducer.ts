@@ -1,15 +1,23 @@
 import { LoginActionsType } from './login.action';
 import { ILogin } from '../../../app/models/Login';
 import * as fromLoginActions from './login.action';
+import { AppUser } from 'src/app/models/User';
+import { ActionReducerMap } from '@ngrx/store';
 
 export interface ILoginState {
-  user: ILogin | {};
+  user: AppUser | {};
   loaded: boolean;
   loading: boolean;
 }
 
+export interface LoginAppState {
+  login: ILoginState;
+}
+
 export const initialState: ILoginState = {
-  user: {},
+  user: {
+    authenticated: false
+  },
   loading: false,
   loaded: false
 };
@@ -26,19 +34,25 @@ export function reducer(
       };
     }
     case fromLoginActions.LOGIN_SUCCESS: {
-      const newState = { ...state, ...action.payload };
+      const user = { ...state.user, authenticated: true, ...action.payload };
       return {
-        ...newState,
+        ...state,
+        user,
         loading: false,
         loaded: true
       };
     }
     case fromLoginActions.LOGIN_FAIL: {
-      console.log(action.payload);
       return {
         ...state,
         loading: false,
         loaded: false
+      };
+    }
+
+    case fromLoginActions.LOGOUT: {
+      return {
+        ...initialState
       };
     }
 
@@ -48,3 +62,9 @@ export function reducer(
 
   return state;
 }
+
+export const reducers: ActionReducerMap<LoginAppState> = {
+  login: reducer
+};
+
+

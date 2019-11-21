@@ -1,7 +1,15 @@
-import { createSelector } from '@ngrx/store';
-import { ILoginState } from './login.reducer';
+import { createSelector, createFeatureSelector } from '@ngrx/store';
+import { ILoginState, LoginAppState } from './login.reducer';
+import { environment } from 'environments/environment';
 
-export const selectState = (state: ILoginState) => state;
+export const loginAppState = createFeatureSelector<LoginAppState>(
+  environment.store.login.storeName
+);
+
+export const selectState = createSelector(
+  loginAppState,
+  (state: LoginAppState) => state.login
+);
 /**
  * Selector for one piece of state i.e loading
  */

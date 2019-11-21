@@ -14,14 +14,12 @@ export class RouterEffect {
   ) {}
 
   @Effect({ dispatch: false })
-  navigate$ = createEffect(() =>
-    this.action$.pipe(
-      ofType(RouterActions.GO),
-      tap((action: RouterActions.Go) => {
-        const { path, query: queryParams, extras } = action.payload;
-        this.router.navigate(path, { queryParams, ...extras });
-      })
-    )
+  navigate$ = this.action$.pipe(
+    ofType(RouterActions.GO),
+    tap((action: RouterActions.Go) => {
+      const { path, query: queryParams, extras } = action.payload;
+      this.router.navigate(path, { queryParams, ...extras });
+    })
   );
 
   @Effect({ dispatch: false })

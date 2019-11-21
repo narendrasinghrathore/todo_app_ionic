@@ -16,7 +16,7 @@ import { Store } from 'store';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule } from './calendar/calendar.module';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { environment } from '../environments/environment';
+import { environment } from 'environments/environment';
 import { StoreModule } from '@ngrx/store';
 import { reducers, metaReducers } from './store/reducers';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
