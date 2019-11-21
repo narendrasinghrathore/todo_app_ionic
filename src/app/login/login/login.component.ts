@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     /**
      * Dispatch logout action on component load
      */
-    // this.store.dispatch(new Logout());
+    this.store.dispatch(new Logout());
   }
 
   onSubmit(event: FormGroup) {
