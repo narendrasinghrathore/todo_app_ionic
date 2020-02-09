@@ -1,6 +1,6 @@
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { ILoginState, LoginAppState } from './login.reducer';
-import { environment } from 'environments/environment';
+import environment from '../../../environments/environment';
 
 export const loginAppState = createFeatureSelector<LoginAppState>(
   environment.store.login.storeName

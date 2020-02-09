@@ -24,7 +24,7 @@ export class AppFirebaseUserService {
             .snapshotChanges()
             .pipe(
                 map(changes => changes.map(
-                    c => ({ key: c.payload.key, ...c.payload.val() })
+                    c => ({ key: c.payload.key, ...c.payload.val() as {} })
                 )),
                 tap((next) => this.store.set(AppStateProps.userProfileData, next))
             );

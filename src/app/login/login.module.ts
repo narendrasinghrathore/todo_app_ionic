@@ -22,7 +22,7 @@ const LoginRoute: Routes = [
 // Store
 import { StoreModule } from '@ngrx/store';
 import { reducers } from './store/login.reducer';
-import { environment } from 'environments/environment';
+import environment from '../../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { LoginEffectService } from './store/login.effect';
 
@@ -37,4 +37,4 @@ import { LoginEffectService } from './store/login.effect';
     EffectsModule.forFeature([LoginEffectService])
   ]
 })
-export class LoginModule {}
+export class LoginModule { }

@@ -4,7 +4,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 
-import { environment } from 'environments/environment.prod';
+import environment from '../../environments/environment';
 import { AppFirebaseService } from './firebase.service';
 import { AppFirebaseCRUDService } from './crud.service';
 import { AppFirebaseUserService } from './user.service';

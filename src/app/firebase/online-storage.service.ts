@@ -34,7 +34,7 @@ export class AppOnlineStorageService implements IAppStorageOnline {
             (a) => a.orderByChild(orderBy).startAt(val).endAt(val)).snapshotChanges()
             .pipe(
                 map(changes => changes.map(
-                    c => ({ key: c.payload.key, ...c.payload.val() })
+                    c => ({ key: c.payload.key, ...c.payload.val() as {} })
                 )),
                 take(1));
     }
